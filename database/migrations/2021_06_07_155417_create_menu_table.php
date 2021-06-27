@@ -15,13 +15,11 @@ class CreateMenuTable extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('id_kategori')->unsigned();
             $table->string('nama');
-            $table->binary('gambar');
             $table->integer('harga');
+            $table->string('status');
+            $table->binary('gambar');
             $table->timestamps();
-
-            $table->foreign('id_kategori')->references('id')->on('kategori_menu');
         });
     }
 

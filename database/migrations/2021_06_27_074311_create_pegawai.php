@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKokiTable extends Migration
+class CreatePegawai extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateKokiTable extends Migration
      */
     public function up()
     {
-        Schema::create('koki', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('pegawai', function (Blueprint $table) {
+            $table->id();
             $table->string('nama');
             $table->string('alamat');
-            $table->integer('no_telp');
-            $table->string('jenis_kelamin');
+            $table->string('no_hp');
+            $table->string('jk');
+            $table->string('username');
+            $table->string('password');
+            $table->string('roles');
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateKokiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('koki');
+        Schema::dropIfExists('pegawai');
     }
 }
