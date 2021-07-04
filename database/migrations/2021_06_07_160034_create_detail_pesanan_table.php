@@ -15,12 +15,13 @@ class CreateDetailPesananTable extends Migration
     {
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('id_transaksi')->unsigned();
-            $table->bigInteger('id_pesanan')->unsigned();
+            $table->bigInteger('pesanan_id')->unsigned();
+            $table->bigInteger('menu_id')->unsigned();
+            $table->integer('jumlah');
             $table->timestamps();
 
-            $table->foreign('id_transaksi')->references('id')->on('transaksi');
-            $table->foreign('id_pesanan')->references('id')->on('pesanan');
+            $table->foreign('pesanan_id')->references('id')->on('pesanan');
+            $table->foreign('menu_id')->references('id')->on('menu');
         });
     }
 

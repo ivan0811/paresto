@@ -14,12 +14,16 @@ class CreateFeedbackTable extends Migration
     public function up()
     {
         Schema::create('feedback', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('id_transaksi')->unsigned();
-            $table->string('feedback');
+            $table->id();
+            $table->string('kd_transaksi');
+            $table->text('isi_feedback');
             $table->timestamps();
 
-            $table->foreign('id_transaksi')->references('id')->on('transaksi');
+            $table->foreign('kd_transaksi')
+            ->references('kd_transaksi')
+            ->on('transaksi')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
         });
     }
 
