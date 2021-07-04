@@ -14,7 +14,7 @@ class CreateGiziTable extends Migration
     public function up()
     {
         Schema::create('gizi', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->bigInteger('id_menu')->unsigned();
             $table->string('kalori');
             $table->string('kolesterol');

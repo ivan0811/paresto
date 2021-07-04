@@ -14,7 +14,7 @@ class CreateKategoriMenuTable extends Migration
     public function up()
     {
         Schema::create('kategori_menu', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('nama');
             $table->timestamps();
         });

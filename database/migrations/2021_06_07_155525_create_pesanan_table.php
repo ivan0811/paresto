@@ -14,6 +14,7 @@ class CreatePesananTable extends Migration
     public function up()
     {
         Schema::create('pesanan', function (Blueprint $table) {
+<<<<<<< HEAD
             $table->bigIncrements('id');
             $table->bigInteger('id_pegawai')->unsigned();
             $table->bigInteger('no_meja')->unsigned();
@@ -22,6 +23,20 @@ class CreatePesananTable extends Migration
 
             $table->foreign('id_pegawai')->references('id')->on('pegawai');
             $table->foreign('no_meja')->references('no_meja')->on('meja');
+=======
+            $table->id();
+            $table->bigInteger('no_meja')->unsigned();
+            $table->bigInteger('pegawai_id')->unsigned();
+            $table->integer('no_antrian');
+            $table->enum('status', ['foo', 'bar']);
+            $table->timestamps();
+
+            $table->foreign('no_meja')
+            ->references('no_meja')
+            ->on('meja')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+>>>>>>> c0874bd1bc87e5fc5d86e6a715860d2478d8a657
         });
     }
 

@@ -15,6 +15,7 @@ class CreateDetailPesananTable extends Migration
     {
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->bigIncrements('id');
+<<<<<<< HEAD
             $table->bigInteger('id_pesanan')->unsigned();
             $table->bigInteger('id_menu')->unsigned();
             $table->integer('jumlah');
@@ -22,6 +23,15 @@ class CreateDetailPesananTable extends Migration
 
             $table->foreign('id_pesanan')->references('id')->on('pesanan');
             $table->foreign('id_menu')->references('id')->on('menu');
+=======
+            $table->bigInteger('pesanan_id')->unsigned();
+            $table->bigInteger('menu_id')->unsigned();
+            $table->integer('jumlah');
+            $table->timestamps();
+
+            $table->foreign('pesanan_id')->references('id')->on('pesanan');
+            $table->foreign('menu_id')->references('id')->on('menu');
+>>>>>>> c0874bd1bc87e5fc5d86e6a715860d2478d8a657
         });
     }
 

@@ -15,7 +15,7 @@ class CreateMejaTable extends Migration
     {
         Schema::create('meja', function (Blueprint $table) {
             $table->bigIncrements('no_meja');
-            $table->string('status');
+            $table->enum('status', ['foo', 'bar']);
             $table->timestamps();
         });
     }
