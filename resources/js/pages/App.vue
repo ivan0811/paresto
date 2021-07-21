@@ -1,12 +1,13 @@
 <template>
-    <v-app>
-        <div v-once v-if="status == 200">
-            <navigation-admin v-if="navAdmin"/>
+    <v-app color="background">
+        <div v-once v-if="status == 200" >
+            <navigation-admin v-if="navAdmin" :roles="roles" :username="username"/>
+            <Header :roles="roles" :username="username"/>
         </div>
         <div v-once v-else>
             <Header/>
         </div>
-        <router-view></router-view>
+        <router-view :card="card"></router-view>
         <Footer v-show="showFooter"/>
     </v-app>
 </template>
@@ -24,12 +25,20 @@ export default {
         return{
             status: 0,
             navAdmin : false,
-            showFooter: true
+            showFooter: true,
+            card : {
+                elevation : 0
+            },
+            roles: '',
+            username: ''
         }
     },
     async created(){
-        const role = await this.checkRoles()
+        const role = await this.checkLogin()
         console.log(role)
+        this.roles = role.user.roles
+        this.username = role.user.username
+        console.log(role.user)
         if(role.status == 200 && role.user.roles == 'admin'){
             this.status = 200
             this.navAdmin = true
@@ -37,18 +46,20 @@ export default {
         }else{
             this.status = 401
         }
-    },
+    },    
     methods: {
         ...mapActions([
-            'checkRoles'
+            'checkRoles',
+            'checkLogin'
         ])
     },
     computed: {
-
+        
     }
 }
 </script>
-<style>
+<style lang="scss">
+    @import '../../sass/app.scss';
     html {
         height: 100%;
     }

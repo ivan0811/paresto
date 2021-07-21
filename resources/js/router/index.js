@@ -8,6 +8,10 @@ import Login from '../pages/Login.vue'
 import Menu from '../pages/Menu.vue'
 import NotFound from '../pages/NotFound.vue'
 import ExampleCompontent from '../components/ExampleComponent.vue'
+import Transaksi from '../pages/admin/Transaksi.vue'
+import Pegawai from '../pages/admin/Pegawai.vue'
+import CreatePegawai from '../pages/admin/CreatePegawai.vue'
+import Profile from '../pages/Profile.vue'
 
 const routes = [
     {
@@ -21,6 +25,26 @@ const routes = [
         name: 'Login',
         path: '/login',
         component: Login
+    },
+    {
+        name: 'Transaksi',
+        path: '/transaksi',
+        component: Transaksi
+    },
+    {
+        name: 'Pegawai',
+        path: '/pegawai',
+        component: Pegawai
+    },
+    {
+        name: 'tambahPegawai',
+        path: '/pegawai/create',
+        component: CreatePegawai
+    },
+    {
+        name: 'Profile',
+        path: '/profile/:username',
+        component: Profile
     },
     {
         name: 'test',
@@ -45,7 +69,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    const admin = ['pegawai', 'test']
+    const admin = ['Transaksi', 'Pegawai', 'test']
     const koki = []
     const pelayan = []
     const kasir = []

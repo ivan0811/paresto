@@ -5,3 +5,25 @@
 @import 'variables';
 
 @import '~@mdi/font/css/materialdesignicons.min.css';
+
+@import '/public/css/icon.css';
+
+.v-main, .background-gray{
+    background-color: #F3F4F6;
+}
+
+.v-btn.active{
+    background-color: #CC915A;
+    color: #fff;
+}
+
+.v-sheet.v-card{
+    border-radius: 12px;
+}
+
+// .v-list-item:hover span.icon{
+//     background-color: #CC915A;
+// }
+
+
+

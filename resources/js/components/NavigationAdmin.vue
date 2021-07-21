@@ -3,68 +3,35 @@
       app
       permanent
       floating
+      color="white"
     >
         <v-sheet class="pt-16 pb-8">
         <div
             class="pb-4 mx-auto"
             style="width: max-content"
         >
-            <v-avatar
-                color="grey"
-                rounded
-                >
-            </v-avatar>
-        </div>
-
-        <div class="text-lg-h6 text-center">
-            Paresto
+            <v-img src="../storage/img/logo_paresto.svg" max-width="59"></v-img>
         </div>
       </v-sheet>
 
-      <v-list class="mx-8">
+      <v-list flat class="mx-8">
           <v-list-item-group color="primary">
-              <v-list-item
-          link
-        >
-            <v-list-item-icon>
-            <v-icon></v-icon>
-          </v-list-item-icon>
+              <v-list-item link class="pe-0" :to="nav.path" v-for="(nav, i) in listNav" :key="i">
+            <v-list-item-icon class="me-5">
+                <span class="icon icon-24" :class="nav.icon + ' ' + ($route.name == nav.name || nav.sub.includes($route.name) ? 'active' : 'grey-dark')"></span>
+            </v-list-item-icon>
 
           <v-list-item-content>
             <v-list-item-title>
-                    Dashboard
+                    {{nav.title}}
             </v-list-item-title>
           </v-list-item-content>
+
+          <v-list-item-icon class="mx-0" v-show="$route.name == nav.name || nav.sub.includes($route.name)">
+                <span class="icon icon-24 icon-chevron-right active"></span>
+            </v-list-item-icon>
         </v-list-item>
 
-        <v-list-item
-          link
-        >
-            <v-list-item-icon>
-            <v-icon></v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>
-                    Transaksi
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-
-      <v-list-item
-          link
-        >
-            <v-list-item-icon>
-            <v-icon></v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>
-                    Pegawai
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
           </v-list-item-group>
 
       </v-list>
@@ -74,9 +41,10 @@
          <v-list class="mx-8">
              <v-list-item
              link
+             :to="'profile/'+username"
             >
             <v-list-item-icon>
-                <v-icon></v-icon>
+                <span class="icon icon-24 icon-user" :class="$route.name == 'Profile' ? 'active' : 'grey-dark'"></span>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -89,7 +57,7 @@
                 @click.prevent="logout()"
             >
                 <v-list-item-icon>
-                    <v-icon></v-icon>
+                    <span class="icon icon-24 icon-logout" :class="$route.name == 'profile' ? 'logout' : 'grey-dark'"></span>
                 </v-list-item-icon>
 
                 <v-list-item-content>
@@ -103,13 +71,37 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
   export default {
+      props: ['roles', 'username'],
       data(){
           return{
-
+              listNav: [
+                  {
+                      title: 'Dashboard',
+                      name: 'Home',
+                      sub: [],
+                      path: '/',
+                      icon: 'icon-dashboard'
+                  },
+                  {
+                      title: 'Transkasi',
+                      name: 'Transaksi',
+                      sub: [],
+                      path: '/transaksi',
+                      icon: 'icon-area-chart'
+                  },
+                  {
+                      title: 'Pegawai',                      
+                      name: 'Pegawai',
+                      sub: ['tambahPegawai'],
+                      path: '/pegawai',
+                      icon: 'icon-users'
+                  },
+              ]
           }
       },
       mounted(){
           this.getLocalStorage()
+          console.log(this.$route.name)
       },
       methods:{
           ...mapActions([
