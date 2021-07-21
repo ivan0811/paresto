@@ -3,7 +3,7 @@ require('./bootstrap');
 import Vue from 'vue';
 import router from './router'
 import vuetify from '../plugins/vuetify'
-import store  from './store'
+import store from './store'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('app-component', require('./pages/App.vue').default)

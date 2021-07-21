@@ -8,6 +8,7 @@ export default new Vuex.Store({
         user:{
             bearer_token: '',
             roles: '',
+            username: ''
         },
         login:{
             status: false
@@ -17,7 +18,8 @@ export default new Vuex.Store({
             showFooter: false,
             showRoutes: false,
             showNotFound: false
-        }
+        },
+        logo: ''
      },
      getters: {
         getUser(state){
@@ -25,6 +27,9 @@ export default new Vuex.Store({
         },
         getStatusLogin(state){
             return state.login.status
+        },
+        getLogo(state){
+            return state.login
         }
      },
 
@@ -34,6 +39,9 @@ export default new Vuex.Store({
         },
         setRoles(state, roles){
             state.user.roles = roles
+         },
+         setUsername(state, username) {
+            state.user.username = username  
         },
         setStatus(state, status){
             state.login.status = status
@@ -43,6 +51,9 @@ export default new Vuex.Store({
             state.page.showFooter = footer
             state.page.showRoutes = route
             state.page.showNotFound = notFound
+        },
+        setLogo(state, logo){
+            state.logo = logo
         }
      },
 
@@ -74,10 +85,14 @@ export default new Vuex.Store({
                 if(res.data.status){
                     console.log(res.data.status)
                     commit('setStatus', res.data.status)
+                    status = 200
+                } else {
+                    status = 401
                 }
             }).catch((error) => {
                 console.error(error)
             })
+            return {status, user : getters.getStatusLogin}
         },
         async checkRoles({dispatch, commit, getters}){
             dispatch('getLocalStorage')
@@ -87,7 +102,7 @@ export default new Vuex.Store({
             headers: {
                 'Authorization': `Bearer ${access_token}`
             }}).then((res) => {
-                commit('setRoles', res.data.roles)
+                commit('setRoles', res.data.roles)                                
                 status = 200
             }).catch((error) => {
                 console.error(error)
@@ -95,6 +110,6 @@ export default new Vuex.Store({
             })
             dispatch('setLocalStorage')
             return {status, user : getters.getUser}
-        }
+        }        
      }
 })
