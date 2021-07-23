@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,9 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
 
     Route::group(['middleware' => 'Admin'], function(){
         Route::get('/test', [UserController::class, 'coba']);
+        Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai');
+        Route::post('/pegawai', [PegawaiController::class, 'create'])->name('pegawai');
+        Route::get('/pegawai/{pegawai}', [PegawaiController::class, 'show'])->name('pegawai');
     });
 
     Route::group(['middleware' => 'Pelayan'], function(){
@@ -37,7 +42,8 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
     });
 
     Route::group(['middleware' => 'Koki'], function(){
-
+        Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+        Route::post('/menu/{menu}', [MenuController::class, 'show'])->name('menu');
     });
 
     Route::group(['middleware' => 'Kasir'], function(){

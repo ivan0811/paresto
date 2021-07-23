@@ -15,15 +15,6 @@ use App\Http\Controllers\UserController;
 |
 */
 
-//Pegawai
-Route::get('api/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai');
-Route::post('api/pegawai', [App\Http\Controllers\PegawaiController::class, 'create'])->name('pegawai');
-Route::get('api/pegawai/{pegawai}', [App\Http\Controllers\PegawaiController::class, 'show'])->name('pegawai');
-
-//Menu
-Route::get('api/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
-Route::post('api/menu/{menu}', [App\Http\Controllers\MenuController::class, 'show'])->name('menu');
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
