@@ -28,6 +28,22 @@
     -webkit-mask-image: url(/images/icon-logout.svg?02214d5e372bd91f2f2fb296603dbb98);
 }
 
+.icon-group{
+    -webkit-mask-image: url(/images/icon-group.svg?22209de993db02d081de3cd22a3fdb9b);    
+}
+
+.icon-cocktail{
+    -webkit-mask-image: url(/images/icon-cocktail.svg?41f086d039747b94b243cfdec10db047);
+}
+
+.icon-nuggets{
+    -webkit-mask-image: url(/images/icon-nuggets.svg?aae1008833f8ee05a2aedcb3132ebc21);
+}
+
+.icon-dish{
+    -webkit-mask-image: url(/images/icon-dish.svg?c367262099a57b76db5bca8ff463a676);
+}
+
 .icon{
     display: inline-block;
     width: 100%;
@@ -58,6 +74,14 @@
 
 .icon.active{
     background-color: #CC915A;
+}
+
+.icon.white{
+    background-color: #fff;
+}
+
+.icon.blue{
+    background-color: #5A95CC;
 }
 
 .v-main, .background-gray {

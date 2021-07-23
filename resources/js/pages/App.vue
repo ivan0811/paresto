@@ -1,12 +1,12 @@
 <template>
     <v-app color="background">
         <div v-once v-if="status == 200" >
-            <navigation-admin v-if="navAdmin" :roles="roles" :username="username"/>
-            <Header :roles="roles" :username="username"/>
+            <navigation v-if="nav.includes(roles)" :roles="roles" :username="username"/>
+            <Header :card="card" :roles="roles" :username="username"/>
         </div>
-        <div v-once v-else>
+        <!-- <div v-once v-else>
             <Header/>
-        </div>
+        </div> -->
         <router-view :card="card"></router-view>
         <Footer v-show="showFooter"/>
     </v-app>
@@ -15,16 +15,16 @@
 import {mapGetters, mapActions} from 'vuex'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
-import NavigationAdmin from '../components/NavigationAdmin.vue'
+import Navigation from '../components/Navigation.vue'
 export default {
     components: {
         Header, Footer,
-        'navigation-admin' : NavigationAdmin
+        'navigation' : Navigation
     },
     data(){
         return{
-            status: 0,
-            navAdmin : false,
+            status: 0,            
+            nav: ['admin', 'pelayan', 'koki'],
             showFooter: true,
             card : {
                 elevation : 0
@@ -34,14 +34,11 @@ export default {
         }
     },
     async created(){
-        const role = await this.checkLogin()
-        console.log(role)
+        const role = await this.checkLogin()        
         this.roles = role.user.roles
-        this.username = role.user.username
-        console.log(role.user)
-        if(role.status == 200 && role.user.roles == 'admin'){
-            this.status = 200
-            this.navAdmin = true
+        this.username = role.user.username        
+        if(role.status == 200){
+            this.status = 200            
             this.showFooter = false
         }else{
             this.status = 401

@@ -12,6 +12,10 @@ import Transaksi from '../pages/admin/Transaksi.vue'
 import Pegawai from '../pages/admin/Pegawai.vue'
 import CreatePegawai from '../pages/admin/CreatePegawai.vue'
 import Profile from '../pages/Profile.vue'
+import Meja from '../pages/pegawai/pelayan/Meja.vue'
+import Pesanan from '../pages/pegawai/pelayan/Pesanan.vue'
+import CreatePesanan from '../pages/pegawai/pelayan/CreatePesanan.vue'
+import ConfirmPesanan from '../pages/pegawai/pelayan/ConfirmPesanan.vue'
 
 const routes = [
     {
@@ -40,6 +44,26 @@ const routes = [
         name: 'tambahPegawai',
         path: '/pegawai/create',
         component: CreatePegawai
+    },    
+    {
+        name: 'Meja',
+        path: '/meja',
+        component: Meja
+    },
+    {
+        name: 'Pesanan',
+        path: '/pesanan',
+        component: Pesanan
+    },
+    {
+        name: 'tambahPesanan',
+        path: '/pesanan/create',
+        component: CreatePesanan
+    },
+    {
+        name: 'confirmPesanan',
+        path: '/pesanan/confirm',
+        component: ConfirmPesanan
     },
     {
         name: 'Profile',
@@ -71,16 +95,17 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
     const admin = ['Transaksi', 'Pegawai', 'test']
     const koki = []
-    const pelayan = []
+    const pelayan = ['Meja', 'Pesanan']
     const kasir = []
+        
 
-    const data = await store.dispatch('checkRoles')
-    console.log(data.status)
+    const data = await store.dispatch('checkRoles')    
     if(data.status == 401 && admin.concat(koki.concat(pelayan.concat(kasir))).includes(to.name)) next({name: 'NotFound'})
     else next()
+    
 
     if(data.status == 200){
-        let roles = data.user.roles
+        let roles = data.user.roles        
         if(admin.includes(to.name) && roles != "admin") next({name: 'NotFound'})
         else next()
 

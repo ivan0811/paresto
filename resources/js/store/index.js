@@ -10,6 +10,98 @@ export default new Vuex.Store({
             roles: '',
             username: ''
         },
+        listNav: [],
+        header: {
+            title: '',
+            subtitle: ''
+        },
+        navigation: {
+            admin: [
+                {
+                    title: 'Dashboard',
+                    name: 'Home',
+                    sub: [],
+                    path: '/',
+                    icon: 'icon-dashboard'
+                },
+                {
+                    title: 'Transkasi',
+                    name: 'Transaksi',
+                    sub: [],
+                    path: '/transaksi',
+                    icon: 'icon-area-chart'
+                },
+                {
+                    title: 'Pegawai',                      
+                    name: 'Pegawai',
+                    sub: ['tambahPegawai'],
+                    path: '/pegawai',
+                    icon: 'icon-users'
+                },
+            ],
+            pelayan: [
+                {
+                    title: 'Home',
+                    name: 'Home',
+                    sub: [],
+                    path: '/',
+                    icon: 'icon-dashboard'
+                },
+                {
+                    title: 'Meja',
+                    name: 'Meja',
+                    sub: [],
+                    path: '/meja',
+                    icon: 'icon-area-chart'
+                },
+                {
+                    title: 'Pesanan',
+                    name: 'Pesanan',
+                    sub: ['tambahPesanan', 'confirmPesanan'],
+                    path: '/pesanan',
+                    icon: 'icon-area-chart'
+                }              
+            ],
+            koki: {
+
+            }
+        },
+        listHeader: {
+            admin: {
+                Home : {
+                    title: '',
+                    subtitle : ''
+                },
+                Transaksi : {
+                    title: '',
+                    subtitle : 'Kelola Riwayat Transaksi'
+                },
+                Pegawai: {
+                    title: '',
+                    subtitle : 'Kelola Pegawai Paresto'
+                },
+                tambahPegawai: {
+                    title: 'Tambahkan Pegawai Baru',
+                    subtitle : ''
+                }
+            },            
+            pelayan: {
+                Meja : {
+                    title: 'Status Meja',
+                    subtitle : ''
+                },
+                Pesanan : {
+                    title: 'Pesanan',
+                    subtitle : ''
+                }                
+            },
+            koki: {
+                
+            },
+            kasir: {
+                
+            }            
+        },
         login:{
             status: false
         },
@@ -18,8 +110,7 @@ export default new Vuex.Store({
             showFooter: false,
             showRoutes: false,
             showNotFound: false
-        },
-        logo: ''
+        },        
      },
      getters: {
         getUser(state){
@@ -28,9 +119,18 @@ export default new Vuex.Store({
         getStatusLogin(state){
             return state.login.status
         },
-        getLogo(state){
-            return state.login
-        }
+         getListNav(state) {
+            return state.listNav
+         },
+         getNav(state) {
+            return state.navigation 
+         },
+         getListHeader(state) {
+             return state.listHeader
+         },
+         getHeader(state) {
+             return state.header
+         }
      },
 
      mutations: {
@@ -51,10 +151,14 @@ export default new Vuex.Store({
             state.page.showFooter = footer
             state.page.showRoutes = route
             state.page.showNotFound = notFound
-        },
-        setLogo(state, logo){
-            state.logo = logo
-        }
+        },        
+         setListNav(state, listNav) {
+            state.listNav = listNav
+         },
+         setHeader(state, title, subtitle) {
+             state.header.title = title
+             state.header.subtitle = subtitle
+         }
      },
 
      actions: {
@@ -110,6 +214,15 @@ export default new Vuex.Store({
             })
             dispatch('setLocalStorage')
             return {status, user : getters.getUser}
-        }        
+         },
+         setListNav({ commit, getters }, role) {            
+             commit('setListNav', getters.getNav[role])
+         },
+         setHeader({ commit, getters }, header) {
+             let listHeader = header.role == 'pelayan' && getters.getNav[header.role][2].sub.includes(header.page) ?
+                 getters.getListHeader[header.role]['Pesanan']
+                 : getters.getListHeader[header.role][header.page]                                         
+             commit('setHeader', listHeader.title, listHeader.subtitle)   
+         }
      }
 })

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-main app v-if="roles == 'admin'">
+    <v-main app v-if="roles != ''">
           <v-container class="mx-5 mt-5" style="height: 100%">      
               <div class="d-flex" style="height: max-content">
                   <div class="me-2">
@@ -23,15 +23,15 @@
                 </v-select>
                 </div>     
                 <div class="ml-auto mr-8">
-                    <v-card>
+                    <v-card v-bind="card">
                         <v-container>
                             <div class="d-flex justify-space-between">
                                 <div class="d-flex">
-                                    <v-avatar rounded color="blue" class="me-3">
+                                    <v-avatar rounded color="blue" class="me-3" size="40">
                                     </v-avatar>
                                     <div>
-                                        <p class="text-subtitle-2 text--secondary ma-0">Saya Admin</p>
-                                        <p class="text-subtitle-1 ma-0">Argya</p>
+                                        <p class="text-caption text--secondary ma-0">Saya Admin</p>
+                                        <p class="text-subtitle-2 ma-0">Argya</p>
                                     </div>                                    
                                 </div>    
                                 <div>
@@ -50,8 +50,9 @@
 </div>
 </template>
 <script>
+import {mapGetters, mapActions} from 'vuex'
 export default {
-    props: ['roles'],
+    props: ['roles', 'card'],
     data(){
         return{
             header : '',
@@ -59,20 +60,32 @@ export default {
         }
     },   
     mounted(){
-        this.setSubHeader(this.$route.name)
+        this.setSubHeader(this.$route.name)                
+        console.log(this.roles)
+        console.log(this.$route.name)
     },
     methods: {
-        setSubHeader(name){            
-            this.subheader = name == 'Transaksi' ? 
-                 'Kelola Riwayat Transaksi'
-                 : name == 'Pegawai' ? 'Kelola Pegawai Paresto' 
-                 : name == 'Profile' ? 'Kelola data diri anda'
-                 : ''
-            this.header = name == 'tambahPegawai' ? 
-            'Tambahkan Pegawai Baru' 
-            : ''        
+        ...mapActions([
+            'setHeader'
+        ]),
+        setSubHeader(name){                        
+            this.setHeader({
+                role : this.roles,
+                page : name
+            })            
+            this.header = this.getHeader.title
+            this.subheader = this.getHeader.subheader
+            
+            this.subheader = name == 'Profile' 
+                 ? 'Kelola data diri anda'
+                 : ''                   
         }
     },   
+    computed: {
+        ...mapGetters([
+            'getHeader'
+        ])
+    },
     watch: {
         $route(to, from){
             this.setSubHeader(to.name)      

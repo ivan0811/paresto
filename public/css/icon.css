@@ -26,6 +26,22 @@
     -webkit-mask-image: url(../images/icon/icon-logout.svg);
 }
 
+.icon-group{
+    -webkit-mask-image: url(../images/icon/icon-group.svg);    
+}
+
+.icon-cocktail{
+    -webkit-mask-image: url(../images/icon/icon-cocktail.svg);
+}
+
+.icon-nuggets{
+    -webkit-mask-image: url(../images/icon/icon-nuggets.svg);
+}
+
+.icon-dish{
+    -webkit-mask-image: url(../images/icon/icon-dish.svg);
+}
+
 .icon{
     display: inline-block;
     width: 100%;
@@ -56,4 +72,12 @@
 
 .icon.active{
     background-color: #CC915A;
+}
+
+.icon.white{
+    background-color: #fff;
+}
+
+.icon.blue{
+    background-color: #5A95CC;
 }

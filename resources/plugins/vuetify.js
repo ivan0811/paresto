@@ -17,8 +17,13 @@ export default new Vuetify({
                 active: '#CC915A',
                 greyPrimary: '#CDC8C3',
                 greyDark: '#9A9590',
+                greyLight: '#F2F0EF',
                 black: '#000000',
-                red: '#DD7474'
+                red: '#DD7474',
+                tableInOrder: '#EFB256',
+                tableActive: '#6BC899',
+                blue: '#5A95CC',
+                brownDarker: '#48332E'                
             },
         },
     },

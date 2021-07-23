@@ -5,17 +5,21 @@
            <v-card v-bind="card">
                <v-container class="pa-8">
                    <v-row>
-                       <v-col cols="6">
-                         <div class="mb-3">              
-                             <v-card class="mx-auto" width="200" color="transparent" elevation="0">                                                                  
-                                     <v-btn color="primary" elevation="0" fab absolute right small top style="margin-right: -30px">
-                                    </v-btn>                        
-                                        <v-avatar rounded width="200" height="200">                                             
-                                        <v-img src="https://picsum.photos/id/11/500/300"></v-img>
-                                    </v-avatar>                                                              
-                             </v-card>                                                             
-                           </div>          
-                           <div class="mb-5">
+                       <v-col lg="6" md="12" sm="12">
+                         <v-row>
+                             <v-col xl="12" lg="12">
+                                <div class="mb-3">              
+                                <v-card class="mx-auto" width="200" color="transparent" elevation="0">                                                                  
+                                        <v-btn color="primary" elevation="0" fab absolute right small top style="margin-right: -30px">
+                                        </v-btn>                        
+                                            <v-avatar rounded width="200" height="200">                                             
+                                            <v-img src="https://picsum.photos/id/11/500/300"></v-img>
+                                        </v-avatar>                                                              
+                                </v-card>                                                             
+                            </div>    
+                             </v-col>
+                             <v-col xl="12" lg="12">
+                            <div class="mb-5">
                               <p class="text-h6 text-center">Argya</p>
                            </div>     
                            <div class="mb-5">
@@ -25,9 +29,11 @@
                            <div class="mb-3">
                                <p class="text-subtitle-2 text--secondary mb-2">Role</p>
                                <p class="ma-0">Admin</p>
-                           </div>     
+                           </div>   
+                             </v-col>
+                         </v-row>                           
                        </v-col>
-                       <v-col cols="6">              
+                       <v-col lg="6" md="12" sm="12">              
                             <div class="mb-3">
                                <div class="mb-3">
                                 <v-inputs>No Telp</v-inputs>
