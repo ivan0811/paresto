@@ -1,13 +1,10 @@
 <template>
     <v-app color="background">
-        <div v-once v-if="status == 200" >
+        <div v-once v-if="status == 200">
             <navigation v-if="nav.includes(roles)" :roles="roles" :username="username"/>
             <Header :card="card" :roles="roles" :username="username"/>
         </div>
-        <!-- <div v-once v-else>
-            <Header/>
-        </div> -->
-        <router-view :card="card"></router-view>
+        <router-view :roles="roles" :card="card"></router-view>
         <Footer v-show="showFooter"/>
     </v-app>
 </template>

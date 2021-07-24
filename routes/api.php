@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
     });
 
     Route::group(['middleware' => 'Kasir'], function(){
-
+        
     });
 });
 

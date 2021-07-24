@@ -5,7 +5,6 @@ import store from '../store'
 Vue.use(VueRouter)
 import Home from '../pages/Home.vue'
 import Login from '../pages/Login.vue'
-import Menu from '../pages/Menu.vue'
 import NotFound from '../pages/NotFound.vue'
 import ExampleCompontent from '../components/ExampleComponent.vue'
 import Transaksi from '../pages/admin/Transaksi.vue'
@@ -13,9 +12,11 @@ import Pegawai from '../pages/admin/Pegawai.vue'
 import CreatePegawai from '../pages/admin/CreatePegawai.vue'
 import Profile from '../pages/Profile.vue'
 import Meja from '../pages/pegawai/pelayan/Meja.vue'
-import Pesanan from '../pages/pegawai/pelayan/Pesanan.vue'
+import Pesanan from '../pages/Pesanan.vue';
 import CreatePesanan from '../pages/pegawai/pelayan/CreatePesanan.vue'
 import ConfirmPesanan from '../pages/pegawai/pelayan/ConfirmPesanan.vue'
+import Menu from '../pages/pegawai/koki/Menu.vue'
+import CreateMenu from '../pages/pegawai/koki/CreateMenu.vue'
 
 const routes = [
     {
@@ -56,6 +57,16 @@ const routes = [
         component: Pesanan
     },
     {
+        name: 'Menu',
+        path: '/menu',
+        component: Menu
+    },
+    {
+        name: 'tambahMenu',
+        path: '/menu/create',
+        component: CreateMenu
+    },
+    {
         name: 'tambahPesanan',
         path: '/pesanan/create',
         component: CreatePesanan
@@ -74,7 +85,7 @@ const routes = [
         name: 'test',
         path: '/test',
         component: ExampleCompontent
-    },
+    },    
     {
         path: '*',
         component: NotFound
@@ -94,18 +105,19 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
     const admin = ['Transaksi', 'Pegawai', 'test']
-    const koki = []
-    const pelayan = ['Meja', 'Pesanan']
+    const koki = ['Menu']
+    const pelayan = ['Meja']
     const kasir = []
         
 
     const data = await store.dispatch('checkRoles')    
     if(data.status == 401 && admin.concat(koki.concat(pelayan.concat(kasir))).includes(to.name)) next({name: 'NotFound'})
     else next()
-    
+        
 
     if(data.status == 200){
-        let roles = data.user.roles        
+        let roles = data.user.roles
+        console.log(koki.includes(to.name))
         if(admin.includes(to.name) && roles != "admin") next({name: 'NotFound'})
         else next()
 

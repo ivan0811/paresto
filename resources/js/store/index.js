@@ -60,11 +60,24 @@ export default new Vuex.Store({
                     sub: ['tambahPesanan', 'confirmPesanan'],
                     path: '/pesanan',
                     icon: 'icon-area-chart'
-                }              
+                }            
             ],
-            koki: {
-
-            }
+            koki: [
+                {
+                    title: 'Pesanan',
+                    name: 'Pesanan',
+                    sub: [],
+                    path: '/pesanan',
+                    icon: 'icon-area-chart'
+                },
+                {
+                    title: 'Menu',
+                    name: 'Menu',
+                    sub: ['tambahMenu'],
+                    path: '/menu',
+                    icon: 'icon-area-chart'
+                }      
+            ]
         },
         listHeader: {
             admin: {
@@ -96,10 +109,24 @@ export default new Vuex.Store({
                 }                
             },
             koki: {
-                
+                Pesanan: {
+                    title: '',
+                    subtitle: 'List Pesanan'
+                },
+                Menu: {
+                    title: '',
+                    subtitle: ''
+                },
+                tambahMenu: {
+                    title: 'Tambahkan Menu Baru',
+                    subtitle: ''
+                }
             },
             kasir: {
-                
+                Home: {
+                    title: '',
+                    subtitle: ''
+                }
             }            
         },
         login:{
