@@ -3,10 +3,13 @@
     <v-main app v-if="roles != ''">
           <v-container class="mx-5 mt-5" style="height: 100%">      
               <div class="d-flex" style="height: max-content">
-                  <div class="me-2">
+                  <div class="me-2" v-if="includesRoles.includes(roles)">
                     <v-toolbar-title class="mt-auto mb-3" :class="$route.name == 'Home' ? 'text-h4' : 'text-h5'" >{{header == '' ? ($route.name == 'Home' ? 'Dashboard' : $route.name) : header}}</v-toolbar-title>
                     <v-subheader class="pa-0" style="height: 0" v-if="$route.name != 'Home'" v-text="subheader"></v-subheader>              
                   </div>                  
+                  <div v-else>
+                      <v-img src="../images/logo_paresto_horizontal.svg" width="130"></v-img>
+                  </div>
                   <div class="ms-2 mt-3" v-if="$route.name == 'Transaksi'">
                     <v-select solo dense class="align-self-end">
                     <template v-slot:item="{ item, attrs, on }">
@@ -22,8 +25,8 @@
                     </template>
                 </v-select>
                 </div>     
-                <div class="ml-auto mr-8">
-                    <v-card v-bind="card">
+                <div class="ml-auto mr-8" :class="roles == 'kasir' ? 'd-flex justify-space-between' : ''">                    
+                    <v-card v-bind="card">                        
                         <v-container>
                             <div class="d-flex justify-space-between">
                                 <div class="d-flex">
@@ -42,6 +45,9 @@
                             </div>                            
                         </v-container>                        
                     </v-card>
+                    <div class="ms-8">
+                        <v-btn @click="logout" outlined x-large color="primary">Logout</v-btn>
+                    </div>                    
                 </div>
               </div>                                                  
       </v-container>
@@ -55,18 +61,22 @@ export default {
     props: ['roles', 'card'],
     data(){
         return{
+            includesRoles: ['admin', 'pelayan', 'koki'],
             header : '',
             subheader: ''            
         }
     },   
     mounted(){
+        this.getLocalStorage()  
         this.setSubHeader(this.$route.name)                
         console.log(this.roles)
         console.log(this.$route.name)
     },
     methods: {
         ...mapActions([
-            'setHeader'
+            'removeLocalStorage',
+            'setHeader',
+            'getLocalStorage',
         ]),
         setSubHeader(name){                        
             this.setHeader({
@@ -79,11 +89,27 @@ export default {
             this.subheader = name == 'Profile' 
                  ? 'Kelola data diri anda'
                  : ''                   
-        }
+        },
+         logout(){
+              const access_token = this.getUser.bearer_token
+              axios.post('/api/logout', {}, {
+                 headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }}).then((res) => {                    
+                    this.removeLocalStorage()
+                    this.$router.push({
+                        name: 'Home'
+                    })  
+                    this.$router.go(0)
+                }).catch((err) => {
+                    console.error(err)
+                });
+          }
     },   
     computed: {
         ...mapGetters([
-            'getHeader'
+            'getHeader',
+            'getUser'
         ])
     },
     watch: {
