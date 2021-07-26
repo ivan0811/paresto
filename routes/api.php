@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
     });
 
     Route::group(['middleware' => 'Pelayan'], function(){
+        Route::get('/meja', [PesananController::class, 'meja']);
+        Route::patch('/update-meja', [PesananController::class, 'updateMeja']);
 
     });
 
