@@ -6,10 +6,10 @@
       color="white"            
       :mini-variant.sync="mini"
     >
-    <v-sheet v-if="roles == 'pelayan'" class="ml-auto" width="max-content">
-        <v-icon>
-            
-        </v-icon>
+    <v-sheet v-if="roles == 'pelayan'" :class="mini ? 'mx-auto' : 'ml-auto mr-5'" class="mt-5 " width="max-content">
+        <v-btn @click="mini = !mini" icon>
+            <span class="icon icon-menu icon-24 black"></span>
+        </v-btn>
     </v-sheet>    
         <v-sheet class="pt-16 pb-8" v-if="!mini">
         <div
@@ -20,7 +20,7 @@
         </div>
       </v-sheet>
 
-      <v-list flat class="mx-auto" width="200">
+      <v-list :class="mini ? 'mt-5' : ''" flat class="mx-auto" width="200">
           <v-list-item-group color="primary">
               <v-list-item link class="pe-0" :to="nav.path" v-for="(nav, i) in listNav" :key="i">
             <v-list-item-icon class="me-5">

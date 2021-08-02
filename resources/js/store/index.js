@@ -44,27 +44,20 @@ export default new Vuex.Store({
                     icon: 'icon-users'
                 },
             ],
-            pelayan: [
-                {
-                    title: 'Home',
-                    name: 'Home',
-                    sub: [],
-                    path: '/',
-                    icon: 'icon-dashboard'
-                },
+            pelayan: [                
                 {
                     title: 'Meja',
                     name: 'Meja',
                     sub: [],
                     path: '/meja',
-                    icon: 'icon-area-chart'
+                    icon: 'icon-pin'
                 },
                 {
                     title: 'Pesanan',
                     name: 'Pesanan',
                     sub: ['selectMeja','tambahPesanan', 'editPesanan', 'confirmPesanan', 'confirmEditPesanan'],
                     path: '/pesanan',
-                    icon: 'icon-area-chart'
+                    icon: 'icon-receipt'
                 }            
             ],
             koki: [
@@ -73,14 +66,14 @@ export default new Vuex.Store({
                     name: 'Pesanan',
                     sub: [],
                     path: '/pesanan',
-                    icon: 'icon-area-chart'
+                    icon: 'icon-text-document-alt'
                 },
                 {
                     title: 'Menu',
                     name: 'Menu',
                     sub: ['tambahMenu', 'editMenu'],
                     path: '/menu',
-                    icon: 'icon-area-chart'
+                    icon: 'icon-clipboard'
                 }      
             ]
         },

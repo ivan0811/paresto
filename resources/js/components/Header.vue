@@ -1,7 +1,7 @@
 <template>
 <div>
     <v-main app v-if="roles != ''">
-          <v-container class="mx-5 mt-5" style="height: 100%">      
+          <v-container class="mx-5 mt-2 mb-5" style="height: 100%">      
               <div class="d-flex" style="height: max-content">
                   <div class="me-2" v-if="includesRoles.includes(roles)">
                     <v-toolbar-title class="mt-auto mb-3" :class="$route.name == 'Home' ? 'text-h4' : 'text-h5'" >{{header == '' ? ($route.name == 'Home' ? 'Dashboard' : $route.name) : header}}</v-toolbar-title>
@@ -28,19 +28,42 @@
                 <div class="ml-auto mr-8" :class="roles == 'kasir' ? 'd-flex justify-space-between' : ''">                    
                     <v-card v-bind="card">                        
                         <v-container>
-                            <div class="d-flex justify-space-between">
+                            <div class="d-flex justify-space-between" style="width: 185px">
                                 <div class="d-flex">
-                                    <v-avatar rounded color="blue" class="me-3" size="40">
+                                    <v-avatar rounded color="blue" class="me-3" size="36">
                                     </v-avatar>
                                     <div>
-                                        <p class="text-caption text--secondary ma-0">Saya Admin</p>
-                                        <p class="text-subtitle-2 ma-0">Argya</p>
+                                        <p style="font-size: 12px" class="text--secondary ma-0">Saya {{roles}}</p>
+                                        <p style="font-size: 15px" class=" ma-0">{{username}}</p>
                                     </div>                                    
                                 </div>    
-                                <div>
-                                    <v-icon>
-                                        
-                                    </v-icon>
+                                <div class="my-auto">
+                                    <v-menu offset-y>
+                                     <template v-slot:activator="{ on, attrs }">
+                                         <v-btn v-bind="attrs" v-on="on" class="my-auto" small icon>
+                                            <span style="height: 25px" class="icon icon-notification black"></span>
+                                        </v-btn>
+                                    </template>
+                                     <v-list width="372">
+                                        <v-list-item>                                            
+                                            <v-list-item-content>
+                                                <v-list-item-title class="text-h6">Notifikasi</v-list-item-title>
+                                            </v-list-item-content>                                            
+                                        </v-list-item>
+                                        <v-list-item three-line>
+                                              <v-list-item-avatar rounded="">
+                                                    <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                                                </v-list-item-avatar>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>Edit</v-list-item-title>
+                                                    <v-list-item-subtitle>Edit</v-list-item-subtitle>
+                                                </v-list-item-content>                                            
+                                        </v-list-item>
+                                        <v-list-item>
+                                            <v-list-item-title>Delete</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                    </v-menu>
                                 </div>                            
                             </div>                            
                         </v-container>                        
@@ -58,7 +81,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 export default {
-    props: ['roles', 'card'],
+    props: ['roles', 'card', 'username'],
     data(){
         return{
             includesRoles: ['admin', 'pelayan', 'koki'],

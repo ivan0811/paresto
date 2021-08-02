@@ -8,14 +8,14 @@
                             <v-sheet
                                 width="30"
                                 elevation="0"
-                                color="tableInOrder"
+                                color="greyPrimary"
                                 height="30"
                                 rounded=""
                                 class="me-1"
                             >
                             </v-sheet>
                             <p class="ms-1 my-auto text-subheader-1">
-                                Sudah dipesan
+                                Disabled
                             </p>                
                     </div>      
                     <div class="d-flex" cols="4">                  
@@ -34,7 +34,7 @@
                     </div>      
                     <div class="d-flex" cols="4">                  
                             <v-sheet
-                                class="me-1 outline-green"        
+                                class="me-1 outline-brown"        
                                 width="30"
                                 elevation="0"                        
                                 height="30"
@@ -191,7 +191,7 @@ export default {
             },
             status: {
                 dipesan : {
-                    color: 'tableInOrder',
+                    color: 'tableActive',
                     class: 'white--text'                    
                 },
                 dipakai: {
@@ -199,11 +199,11 @@ export default {
                     class: 'white--text'
                 },
                 kosong: {
-                    class: 'outline-green'
-                },
-                selected: {
-                    color: 'greyDark',
+                    color: 'greyPrimary',
                     class: 'white--text'
+                },
+                selected: {                    
+                    class: 'white--text outline-brown'
                 }
             }            
         }
@@ -224,15 +224,17 @@ export default {
             'loadMeja', 
             'setPesananStorage'            
         ]),        
-        selectMeja(jumlah, meja, no_meja){                                    
-            let current = this.currentSelected
-            if(typeof current.meja == 'number' && typeof current.jumlah == 'number')
-                this.meja[current.jumlah][current.meja].status = 'kosong'
+        selectMeja(jumlah, meja, no_meja){       
+            if(this.meja[jumlah][meja].status != 'kosong'){
+                let current = this.currentSelected
+                if(typeof current.meja == 'number' && typeof current.jumlah == 'number')
+                    this.meja[current.jumlah][current.meja].status = 'dipakai'
 
-            this.meja[jumlah][meja].status = 'selected'
-            this.selected = no_meja
-            current.meja = meja
-            current.jumlah = jumlah
+                this.meja[jumlah][meja].status = 'selected'
+                this.selected = no_meja
+                current.meja = meja
+                current.jumlah = jumlah
+            }        
         },
         addZero(no_meja){            
             return no_meja.toString().length == 1 ? '0' + no_meja : no_meja
@@ -255,6 +257,10 @@ export default {
 <style scoped>
 .theme--light.v-sheet.outline-green{
     border: solid #6BC899 2px;
+}
+.theme--light.v-sheet.outline-brown{
+    background-color: #6BC899;
+    border: solid #CC915A 5px;
 }
 .theme--light.v-sheet.sheet-table-person{    
     background-color: #48332E;

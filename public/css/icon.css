@@ -42,6 +42,34 @@
     -webkit-mask-image: url(../images/icon/icon-dish.svg);
 }
 
+.icon-trend-up{
+    -webkit-mask-image: url(../images/icon/icon-trend-up.svg);
+}
+
+.icon-clipboard{
+    -webkit-mask-image: url(../images/icon/icon-clipboard.svg);
+}
+
+.icon-notification{
+    -webkit-mask-image: url(../images/icon/icon-notification.svg);
+}
+
+.icon-menu{
+    -webkit-mask-image: url(../images/icon/icon-menu.svg);
+}
+
+.icon-pin{
+    -webkit-mask-image: url(../images/icon/icon-pin.svg);
+}
+
+.icon-receipt{
+    -webkit-mask-image: url(../images/icon/icon-receipt.svg);
+}
+
+.icon-text-document-alt{
+    -webkit-mask-image: url(../images/icon/icon-text-document-alt.svg);
+}
+
 .icon{
     display: inline-block;
     width: 100%;
@@ -80,4 +108,8 @@
 
 .icon.blue{
     background-color: #5A95CC;
+}
+
+.icon.black{
+    background-color: black;
 }

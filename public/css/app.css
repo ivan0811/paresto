@@ -44,6 +44,34 @@
     -webkit-mask-image: url(/images/icon-dish.svg?f32f9fccbfb25fc728584352e08c4b0f);
 }
 
+.icon-trend-up{
+    -webkit-mask-image: url(/images/icon-trend-up.svg?5717ac66ffd947eef4e0cf0dbe41fa16);
+}
+
+.icon-clipboard{
+    -webkit-mask-image: url(/images/icon-clipboard.svg?9cb3bc303ff8051180875aefe1170345);
+}
+
+.icon-notification{
+    -webkit-mask-image: url(/images/icon-notification.svg?a1fca0a56655662ce2e8a24e2b33be46);
+}
+
+.icon-menu{
+    -webkit-mask-image: url(/images/icon-menu.svg?0ff0e81e70fad09899fc16361698f6b6);
+}
+
+.icon-pin{
+    -webkit-mask-image: url(/images/icon-pin.svg?7563ea2bebc0156311d4f37319693672);
+}
+
+.icon-receipt{
+    -webkit-mask-image: url(/images/icon-receipt.svg?19c70cae15384001773927bdf0cde507);
+}
+
+.icon-text-document-alt{
+    -webkit-mask-image: url(/images/icon-text-document-alt.svg?8d7418c09a75fdf3ba0300d6209ed15d);
+}
+
 .icon{
     display: inline-block;
     width: 100%;
@@ -82,6 +110,10 @@
 
 .icon.blue{
     background-color: #5A95CC;
+}
+
+.icon.black{
+    background-color: black;
 }
 
 .v-main, .background-gray {

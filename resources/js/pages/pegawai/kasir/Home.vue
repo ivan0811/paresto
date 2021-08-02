@@ -141,9 +141,9 @@ export default {
         transaksi: [],
         detail: {},
         alertStatus: {              
-              lunas: 'success',              
-              belumLunas: 'red'
-          },
+            lunas: 'success',              
+            belumLunas: 'red'
+        },
     }),
     async mounted() {
         await this.loadTransaksi()

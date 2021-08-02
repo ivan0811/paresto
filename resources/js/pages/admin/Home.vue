@@ -10,10 +10,10 @@
             cols="6"
           >
             <v-card elevation="0" class="rounded-card">
-              <v-subheader></v-subheader>
+              <v-subheader class="pt-5" style="width: 70px"><span class="icon icon-trend-up icon-32 blue"></span></v-subheader>
 
               <v-list two-line>
-                <template >
+                <template>
                   <v-list-item
                   >
                     <v-list-item-content>
@@ -34,7 +34,7 @@
           >
 
             <v-card elevation="0" class="rounded-card">
-              <v-subheader></v-subheader>
+              <v-subheader class="pt-5" style="width: 70px"><span class="icon icon-users icon-32 blue"></span></v-subheader>
 
               <v-list two-line>
                 <template >
@@ -45,7 +45,7 @@
                            Total Pegawai
                         </v-list-item-subtitle>
                       <v-list-item-title>
-                          19
+                          {{pegawai}}
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -57,19 +57,18 @@
             cols="3"
           >
             <v-card elevation="0" class="rounded-card">
-              <v-subheader></v-subheader>
+              <v-subheader class="pt-5" style="width: 70px"><span class="icon icon-clipboard icon-32 blue"></span></v-subheader>
 
               <v-list two-line>
-                <template >
+                <template>
                   <v-list-item
                   >
-
                      <v-list-item-content>
                       <v-list-item-subtitle>
                            Total Menu
                         </v-list-item-subtitle>
                       <v-list-item-title>
-                          74
+                          {{menu}}
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -108,28 +107,25 @@
           >
           <div class="d-flex justify-space-between">
               <div class="text-h6 mb-2">Riwayat</div>
-              <v-btn text color="primary">Selengkapnya</v-btn>
+              <v-btn to="/transaksi" text color="primary">Selengkapnya</v-btn>
           </div>
           <v-row>
-              <v-col cols="12">
-                  <v-card elevation="0" class="rounded-card">
-                    <v-container>
-                        <div class="d-flex justify-space-between select-riwayat">
-                            <p class="font-weight-regular ma-0" color="greyPrimary">01</p>
-                            <p class="font-weight-regular ma-0">Meja#34</p>
-                            <p class="font-weight-regular ma-0" color="greySecondary">24 April 2021 20.14 WIB</p>
-                            <p class="font-weight-regular ma-0">Rp 460.000</p>
-                            <v-alert class="py-1 px-4 rounded-pill text-caption mb-0" color="success" text dense>Lunas</v-alert>
-                             <v-btn
-                                icon
-                                small
-                                >
-                                <v-icon>mdi-trash-can</v-icon>
-                            </v-btn>
+               <v-col cols="12" v-for="(item, i) in transaksi.filter((_, index) => index < 12)" :key="i">
+                    <v-card elevation="0" v-bind="card" @click.native="showDialogDetail(item)">
+                    <v-container class="py-2 px-5">
+                        <div class="d-flex justify-space-between">
+                            <p class="font-weight-regular greyPrimary--text my-auto">{{item.no_antrian}}</p>
+                            <p class="font-weight-regular my-auto">Meja #{{addZero(item.no_meja)}}</p>
+                            <p class="text-caption greyDark--text my-auto">24 April 2021 20.14 WIB</p>
+                            <p class="font-weight-regular my-auto">Rp {{getTotalHarga(item)}}</p>
+                            <v-alert class="py-1 px-4 my-auto rounded-pill text-caption mb-0" :color="getAlertStatus(checkStatus(item))" text dense>{{checkStatus(item)}}</v-alert>
+                            <v-btn class="my-auto" x-small icon>
+                              <span class="icon icon-bin icon-16 grey-dark"></span>
+                            </v-btn>                             
                         </div>
                     </v-container>
                 </v-card>
-              </v-col>
+                </v-col>
               <v-col cols="12">
                     <v-card elevation="0" class="rounded-card">
                         <div class="d-flex">
@@ -182,30 +178,68 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
  const gradients = [
     ['#5A95CC'],
     ['#74CEDD', '#FFFFFF']
   ]
 
 export default {
+    props: ['card'],
      data: () => ({
         fill: true,
         selectedGradient: gradients[1],
         gradients,
         padding: 8,
         radius: 0,
-        value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
+        value: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         width: 2,
-        menu: 'Makanan'
+        menu: 'Makanan',
+        transaksi: [],
+        pegawai: 0,
+        menu: 0,
+        alertStatus: {              
+            lunas: 'success',              
+            belumLunas: 'red'
+        },
     }),
-    mounted() {
-
+    async mounted() {
+      await this.loadPegawai()
+      await this.loadMenu()
+      await this.loadTransaksi()
+      this.pegawai = this.getPegawai.length
+      this.menu = this.getMenu.length
+      this.transaksi = this.getTransaksi                
     },
     methods:{
-
+      ...mapActions([
+        'loadPegawai',
+        'loadMenu',
+        'loadTransaksi'
+      ]),
+      addZero(no_meja){            
+          return no_meja.toString().length == 1 ? '0' + no_meja : no_meja
+      },
+      checkStatus(item){
+          return item.transaksi.length > 0 ? 'Lunas' : 'Belum Lunas'
+      },
+      getAlertStatus(status){            
+            return this.alertStatus[status == 'Belum Lunas' ? 'belumLunas' : 'lunas']
+        },
+      getTotalHarga(item){             
+          let harga = item.detail_pesanan.map(val => {
+              return val.menu.harga * val.jumlah
+          })                        
+              
+          return harga.length > 0 ? harga.reduce((total, num) => total + num) : 0
+      }
     },
     computed:{
-
+      ...mapGetters([
+        'getPegawai',
+        'getMenu',
+        'getTransaksi'
+      ])
     }
 }
 </script>

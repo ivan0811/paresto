@@ -32,8 +32,17 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
     Route::get('/check-status', [AuthController::class, 'checkStatus']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::group(['middleware' => 'Admin'], function(){
-        Route::get('/test', [UserController::class, 'coba']);
+    Route::get('/pesanan', [PesananController::class, 'show']);
+    Route::patch('/pesanan/update-status/{id}', [PesananController::class, 'updateStatus']);
+    Route::post('/pesanan/update-status/menu', [PesananController::class, 'updateStatusPesananMenu']);    
+
+    Route::get('/menu', [MenuController::class, 'index']);
+    Route::get('/kategori', [MenuController::class, 'kategori']);
+    Route::post('/menu/update-status', [MenuController::class, 'updateStatus']);
+    
+    Route::get('/transaksi', [TransaksiController::class, 'show']);
+
+    Route::group(['middleware' => 'Admin'], function(){                                
         Route::prefix('pegawai')->group(function () {
             Route::get('/', [PegawaiController::class, 'index']);
             Route::post('/', [PegawaiController::class, 'store']);
@@ -41,11 +50,7 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
             Route::patch('/{id}', [PegawaiController::class, 'update']);
             Route::delete('/{id}', [PegawaiController::class, 'destroy']);
         });                
-    });
-
-    Route::get('/pesanan', [PesananController::class, 'show']);
-    Route::patch('/pesanan/update-status/{id}', [PesananController::class, 'updateStatus']);
-    Route::post('/pesanan/update-status/menu', [PesananController::class, 'updateStatusPesananMenu']);    
+    });    
 
     Route::group(['middleware' => 'Pelayan'], function(){
         Route::prefix('meja')->group(function () {
@@ -58,11 +63,7 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
             Route::patch('/{id}', [PesananController::class, 'update']);
             Route::delete('/{id}', [PesananController::class, 'destroy']);
         });
-    });
-
-    Route::get('/menu', [MenuController::class, 'index']);
-    Route::get('/kategori', [MenuController::class, 'kategori']);
-    Route::post('/menu/update-status', [MenuController::class, 'updateStatus']);
+    });    
 
     Route::group(['middleware' => 'Koki'], function(){
         Route::prefix('menu')->group(function () {                        
@@ -73,9 +74,8 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
         });                
     });        
 
-    Route::group(['middleware' => 'Kasir'], function(){
-        Route::prefix('transaksi')->group(function () {
-            Route::get('/', [TransaksiController::class, 'show']);
+    Route::group(['middleware' => 'Kasir'], function(){        
+        Route::prefix('transaksi')->group(function () {            
             Route::post('/', [TransaksiController::class, 'store']);             
             Route::delete('/{id}', [TransaksiController::class, 'destroy']); 
         });        

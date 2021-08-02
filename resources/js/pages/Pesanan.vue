@@ -13,8 +13,7 @@ export default {
         'pesanan-pelayan' : PesananPelayan,
         'pesanan-koki' : PesananKoki
     },    
-    mounted(){
-        console.log(this.roles)
+    mounted(){        
         if(roles != 'pelayan' && roles != 'koki') this.$router.push({name: 'NotFound'})  
     }
 }

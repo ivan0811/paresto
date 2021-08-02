@@ -78,13 +78,16 @@ export default {
     async mounted(){
         await this.loadPesanan()
         this.pesanan = this.getPesanan      
-        this.countHargaPesanan()          
+        // this.countHargaPesanan()          
     },
     methods: {        
         ...mapActions([
-            'loadTransaksi',
+            'loadPesanan',
             'deletePesanan'
-        ]),       
+        ]),      
+        countHargaPesanan(item){
+            return item.menu.harga * item.jumlah
+        },        
         closeDetailPesanan(){
             this.dialogDetailPesanan = false
         },
@@ -104,7 +107,7 @@ export default {
         async deleteHandler(id){
             await this.deletePesanan(id)                
             this.pesanan = this.getPesanan      
-            this.countHargaPesanan()      
+            // this.countHargaPesanan()      
         },
         showDialogDetail(item){
             this.dialogDetailPesanan = !this.dialogDetailPesanan
@@ -113,7 +116,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'getTransaksi'
+            'getPesanan'
         ])
     }
 }
