@@ -19,7 +19,7 @@ class CreateMenuTable extends Migration
             $table->string('nama');
             $table->string('gambar')->nullable()->default(null);
             $table->integer('harga');
-            $table->enum('status', ['foo', 'bar']);
+            $table->enum('status', ['tersedia', 'habis']);
             $table->timestamps();
 
             $table->foreign('kategori_id')->references('id')->on('kategori_menu');

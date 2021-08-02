@@ -26,107 +26,49 @@
          <v-sheet class="mx-2 mt-2 mb-5">        
             <div class="d-flex justify-space-between">
                 <div class="d-flex">
-                    <v-avatar rounded="" color="primary"></v-avatar>
+                    <v-avatar rounded="" color="primary">
+                        <p class="white--text mb-0">{{detail.no_antrian}}</p>
+                    </v-avatar>
                     <div class="ms-3">
-                        <p class="text-subtitle-1 ma-0">Meja #34</p>
+                        <p class="text-subtitle-1 ma-0">Meja #{{detail.no_meja}}</p>
                         <p class="text-caption greyDark--text ma-0">24 April 2021</p>
                     </div>                    
                 </div>                
-                <v-alert class="py-1 px-4 rounded-pill text-caption mb-auto" color="success" text dense>Lunas</v-alert>
+                <v-alert class="py-1 px-4 rounded-pill text-caption mb-auto" :color="getAlertStatus(detail.status)" text dense>{{detail.status}}</v-alert>
             </div>                      
         </v-sheet>
         <v-sheet class="mx-2 mb-3 overflow-y-auto" max-height="180">
             <v-list>
-                <v-list-item two-line class="pa-0 d-flex justify-space-between">             
+                <v-list-item v-for="(item, index) in detail.detail_pesanan" :key="index" two-line class="pa-0 d-flex justify-space-between">
                     <v-list-item-avatar rounded>
                         <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
+                        <v-list-item-title>{{item.menu.nama}}</v-list-item-title>
+                        <v-list-item-subtitle>Rp {{item.menu.harga}}</v-list-item-subtitle>
                     </v-list-item-content>                          
-                    <v-list-item-content class="ms-auto me-3">
-                        <v-list-item-title>x4</v-list-item-title>                        
-                    </v-list-item-content>                           
-                    <v-list-item-content>                        
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                </v-list-item>
-                <v-list-item two-line class="pa-0 d-flex justify-space-between">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                    <v-list-item-content class="ms-auto me-2">
-                        <v-list-item-title>x4</v-list-item-title>                        
-                    </v-list-item-content>                           
-                    <v-list-item-content>                        
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                </v-list-item>
-                <v-list-item two-line class="pa-0 d-flex justify-space-between">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                    <v-list-item-content class="ms-auto me-2">
-                        <v-list-item-title>x4</v-list-item-title>                        
-                    </v-list-item-content>                           
-                    <v-list-item-content>                        
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                </v-list-item>
-                <v-list-item two-line class="pa-0 d-flex justify-space-between">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                    <v-list-item-content class="ms-auto me-2">
-                        <v-list-item-title>x4</v-list-item-title>                        
-                    </v-list-item-content>                           
-                    <v-list-item-content>                        
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                </v-list-item>
-                <v-list-item two-line class="pa-0 d-flex justify-space-between">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                    <v-list-item-content class="ms-auto me-2">
-                        <v-list-item-title>x4</v-list-item-title>                        
-                    </v-list-item-content>                           
-                    <v-list-item-content>                        
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>
-                    </v-list-item-content>                          
-                </v-list-item>
+                    <v-list-item-action class="ms-auto me-3">
+                        <v-list-item-title>x{{item.jumlah}}</v-list-item-title>                        
+                    </v-list-item-action>                           
+                    <v-list-item-action>                        
+                        <v-list-item-subtitle class="pr-3">Rp {{countHargaPesanan(item)}}</v-list-item-subtitle>
+                    </v-list-item-action>                          
+                </v-list-item>               
             </v-list>
         </v-sheet>
         <v-sheet class="mx-2 mt-8 mb-5">
             <div class="text-h5 mb-3">Ringkasan</div>         
             <div class="d-flex justify-space-between">
                 <p class="text-subtitle-2 text--secondary mb-2">Jumlah Item</p>
-                <p class="text-subtitle-2 mb-2">11</p>
+                <p class="text-subtitle-2 mb-2">{{detail.detail_pesanan.length}}</p>
             </div>            
             <div class="d-flex justify-space-between">
                 <p class="text-subtitle-2 text--secondary mb-2">Pajak</p>
-                <p class="text-subtitle-2 mb-2">Rp 26.700</p>
+                <p class="text-subtitle-2 mb-2">Rp 0</p>
             </div>            
             <div class="d-flex justify-space-between">
                 <p class="text-subtitle-2 text--secondary mb-2">Total Harga</p>
-                <p class="text-subtitle-2 mb-2">Rp 293.700</p>
+                <p class="text-subtitle-2 mb-2">Rp {{countTotalHarga}}</p>
             </div>                         
         </v-sheet>                 
 
@@ -146,6 +88,38 @@
 </template>
 <script>
   export default {
-    props: ['dialog']    
+    props: ['dialog', 'detail'],
+    data(){
+        return {
+            alertStatus: {
+              menunggu: 'blue',
+              diproses: 'success',
+              habis: 'red',
+              selesai: 'orange'
+          },
+        }
+    },
+    methods: {
+        getAlertStatus(status){
+            return this.alertStatus[status]
+        },
+        countHargaPesanan(item){
+            return item.menu.harga * item.jumlah
+        },        
+    },
+    computed: {
+        countTotalHarga(){             
+            let harga = this.detail.detail_pesanan.map(val => {
+                return val.menu.harga * val.jumlah
+            })                        
+                
+            return harga.length > 0 ? harga.reduce((total, num) => total + num) : 0
+        },
+    },
+    watch:{
+        detail(e){
+            console.log(e)
+        }
+    }    
   }
 </script>

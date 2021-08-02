@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PegawaiController extends Controller
 {
@@ -12,10 +14,8 @@ class PegawaiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $pegawai = Pegawai::all();
-        return response()->json([$pegawai]);
+    public function index(){        
+        return response()->json(Pegawai::with('user')->get());
     }
 
     /**
@@ -23,8 +23,7 @@ class PegawaiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         //
     }
 
@@ -34,15 +33,25 @@ class PegawaiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        // $pegawai = new Pegawai();
-        // $pegawai->alamat = $request->alamat;
-        // $pegawai->no_telp = $request->no_telp;
-        // $pegawai->jk = $request->jk;
-        // $pegawai->save();
+    public function store(Request $request){        
+        $user = new User();
+        $user->nama = $request->nama;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->roles = $request->roles;
+        $user->save();
+        
+        Pegawai::create([
+            'user_id' => $user->id,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->noTelp,
+            'jk' => $request->jk
+        ]);
 
-        // return response()->json();
+        $user = Pegawai::with('user')->get();
+
+        return response()->json(['status' => true, 'user' => $user]);
     }
 
     /**
@@ -51,10 +60,8 @@ class PegawaiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $pegawai = Pegawai::findOrFail($id);
-        return response()->json([$pegawai]);
+    public function show($id){        
+        
     }
 
     /**
@@ -65,7 +72,8 @@ class PegawaiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return response()->json(['user' => $user, 'pegawai' => $user->pegawai]);
     }
 
     /**
@@ -77,7 +85,26 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->username = $request->username;
+        if($request->password != ''){
+            $user->password = Hash::make($request->password);
+        }        
+        $user->nama = $request->nama;
+        $user->email = $request->email;                
+        $user->roles = $request->roles;
+        $user->save();
+
+        Pegawai::where('user_id', $id)
+        ->update([
+            'alamat' => $request->alamat,
+            'no_telp' => $request->noTelp,
+            'jk' => $request->jk
+        ]);
+
+        $user = Pegawai::with('user')->get();
+        
+        return response()->json(['status' => true, 'user' => $user]);
     }
 
     /**
@@ -88,6 +115,10 @@ class PegawaiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::findOrFail($id)->delete();        
+        return response()->json([
+            'status' => true,
+            'user' => Pegawai::with('user')->get()
+        ]);
     }
 }

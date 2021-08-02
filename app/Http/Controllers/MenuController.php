@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\models\Kategori;
+use App\Models\Kategori;
 use App\Models\Menu;
 
 class MenuController extends Controller
 {
-    function Kategori(){
-        $kategori = Kategori::all();
-        return view('Kategori')->with('Kategori', $kategori);
-    }
+        public function kategori(){                      
+            return response()->json(Kategori::all());
+        }
+
         public function index()
-        {
-            $menu = Menu::all();
-            return response()->json([$menu]);
+        {            
+            return response()->json(Menu::with('kategori')->get());
         }
     
         /**
@@ -35,7 +34,14 @@ class MenuController extends Controller
          */
         public function store(Request $request)
         {
-            //
+            Menu::create([
+                'kategori_id' => $request->kategori,
+                'nama' => $request->nama,
+                'harga' => $request->harga,
+                'status' => 'tersedia'
+            ]);
+        
+            return response()->json(['status' => true]);
         }
     
         /**
@@ -46,8 +52,7 @@ class MenuController extends Controller
          */
         public function show($id)
         {
-            $menu = Menu::findOrFail($id);
-            return response()->json([$menu]);
+            
         }
     
         /**
@@ -57,8 +62,8 @@ class MenuController extends Controller
          * @return \Illuminate\Http\Response
          */
         public function edit($id)
-        {
-            //
+        {            
+            return response()->json(Menu::findOrFail($id));
         }
     
         /**
@@ -70,7 +75,13 @@ class MenuController extends Controller
          */
         public function update(Request $request, $id)
         {
-            //
+            $menu = Menu::findOrFail($id);
+            $menu->kategori_id = $request->kategori;
+            $menu->nama = $request->nama;
+            $menu->harga = $request->harga;            
+            $menu->save();
+
+            return response()->json(['status' => true]);
         }
     
         /**
@@ -81,6 +92,18 @@ class MenuController extends Controller
          */
         public function destroy($id)
         {
-            //
+            Menu::findOrFail($id)->delete();
+            return response()->json(['status' => true]);
         }
+
+        public function updateStatus(Request $req){
+            foreach ($req->id as $key => $val) {
+                Menu::where('id', $val)
+                ->update([
+                    'status' => 'habis'
+                ]);
+            }
+            return response()->json(['status' => true]);
+        }
+
 }

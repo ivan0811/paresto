@@ -1,6 +1,11 @@
 import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import pegawai from './modules/pegawai.js'
+import menu from './modules/menu.js'
+import meja from './modules/meja.js'
+import pesanan from './modules/pesanan.js'
+import transaksi from './modules/transaksi.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -34,7 +39,7 @@ export default new Vuex.Store({
                 {
                     title: 'Pegawai',                      
                     name: 'Pegawai',
-                    sub: ['tambahPegawai'],
+                    sub: ['tambahPegawai', 'editPegawai'],
                     path: '/pegawai',
                     icon: 'icon-users'
                 },
@@ -57,7 +62,7 @@ export default new Vuex.Store({
                 {
                     title: 'Pesanan',
                     name: 'Pesanan',
-                    sub: ['tambahPesanan', 'confirmPesanan'],
+                    sub: ['selectMeja','tambahPesanan', 'editPesanan', 'confirmPesanan', 'confirmEditPesanan'],
                     path: '/pesanan',
                     icon: 'icon-area-chart'
                 }            
@@ -73,7 +78,7 @@ export default new Vuex.Store({
                 {
                     title: 'Menu',
                     name: 'Menu',
-                    sub: ['tambahMenu'],
+                    sub: ['tambahMenu', 'editMenu'],
                     path: '/menu',
                     icon: 'icon-area-chart'
                 }      
@@ -95,6 +100,10 @@ export default new Vuex.Store({
                 },
                 tambahPegawai: {
                     title: 'Tambahkan Pegawai Baru',
+                    subtitle : ''
+                },
+                editPegawai: {
+                    title: 'Edit Pegawai',
                     subtitle : ''
                 }
             },            
@@ -119,6 +128,10 @@ export default new Vuex.Store({
                 },
                 tambahMenu: {
                     title: 'Tambahkan Menu Baru',
+                    subtitle: ''
+                },
+                editMenu: {
+                    title: 'Edit Menu',
                     subtitle: ''
                 }
             },
@@ -182,9 +195,9 @@ export default new Vuex.Store({
          setListNav(state, listNav) {
             state.listNav = listNav
          },
-         setHeader(state, title, subtitle) {
-             state.header.title = title
-             state.header.subtitle = subtitle
+         setHeader(state, header) {             
+             state.header.title = header.title
+             state.header.subtitle = header.subtitle
          }
      },
 
@@ -213,8 +226,7 @@ export default new Vuex.Store({
             headers: {
                 'Authorization': `Bearer ${access_token}`
             }}).then((res) => {
-                if(res.data.status){
-                    console.log(res.data.status)
+                if(res.data.status){                    
                     commit('setStatus', res.data.status)
                     status = 200
                 } else {
@@ -248,8 +260,16 @@ export default new Vuex.Store({
          setHeader({ commit, getters }, header) {
              let listHeader = header.role == 'pelayan' && getters.getNav[header.role][2].sub.includes(header.page) ?
                  getters.getListHeader[header.role]['Pesanan']
-                 : getters.getListHeader[header.role][header.page]                                         
-             commit('setHeader', listHeader.title, listHeader.subtitle)   
-         }
-     }
+                 : getters.getListHeader[header.role][header.page]             
+             commit('setHeader', listHeader)
+             console.log(getters.getHeader)
+         },         
+    },
+    modules: {
+        pegawai,
+        menu,
+        meja,
+        pesanan,
+        transaksi
+    }
 })

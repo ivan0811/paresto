@@ -5,7 +5,7 @@
               <div class="d-flex" style="height: max-content">
                   <div class="me-2" v-if="includesRoles.includes(roles)">
                     <v-toolbar-title class="mt-auto mb-3" :class="$route.name == 'Home' ? 'text-h4' : 'text-h5'" >{{header == '' ? ($route.name == 'Home' ? 'Dashboard' : $route.name) : header}}</v-toolbar-title>
-                    <v-subheader class="pa-0" style="height: 0" v-if="$route.name != 'Home'" v-text="subheader"></v-subheader>              
+                    <v-subheader class="pa-0" style="height: 0" v-if="roles != 'kasir'" v-text="subheader"></v-subheader>              
                   </div>                  
                   <div v-else>
                       <v-img src="../images/logo_paresto_horizontal.svg" width="130"></v-img>
@@ -45,7 +45,7 @@
                             </div>                            
                         </v-container>                        
                     </v-card>
-                    <div class="ms-8">
+                    <div class="ms-8" v-if="roles == 'kasir'">
                         <v-btn @click="logout" outlined x-large color="primary">Logout</v-btn>
                     </div>                    
                 </div>
@@ -78,17 +78,16 @@ export default {
             'setHeader',
             'getLocalStorage',
         ]),
-        setSubHeader(name){                        
+        setSubHeader(name){                               
             this.setHeader({
                 role : this.roles,
                 page : name
-            })            
-            this.header = this.getHeader.title
-            this.subheader = this.getHeader.subheader
-            
+            })                        
+            this.header = this.getHeader.title                        
+
             this.subheader = name == 'Profile' 
                  ? 'Kelola data diri anda'
-                 : ''                   
+                 : this.getHeader.subtitle
         },
          logout(){
               const access_token = this.getUser.bearer_token

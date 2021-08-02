@@ -4,11 +4,12 @@
         <v-container class="px-8">
            <v-card v-bind="card">
                <v-container class="pa-5">
+                   <form @submit.prevent="submitHandler">
                    <v-row>
                        <v-col cols="6">
-                         <div class="mb-3">
+                         <!-- <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Upload Foto</v-inputs>
+                                <v-input>Upload Foto</v-input>
                             </div>
                             <vue-dropzone
                             ref="myVueDropzone"
@@ -20,49 +21,56 @@
                             @vdropzone-sending-multiple="sendingFiles"
                             @vdropzone-success-multiple="success"
                             ></vue-dropzone>
-                           </div>          
+                           </div>           -->
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Jenis</v-inputs>
+                                <v-input>Jenis</v-input>
                             </div>
                                 <v-select
                                 dense
                                 solo
                                 flat
                                 background-color="grey lighten-4"           
-                                :items="['Makanan', 'Minuman', 'Cemilan', 'Tambahan']"
+                                :items="kategori"
                                 label="Pilih Jenis"
+                                item-text="state"
+                                item-value="id"
+                                 v-model="handlerKategori"
+                                return-object
                                 ></v-select>
                            </div>                             
                        </v-col>
                        <v-col cols="6">
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Nama Menu</v-inputs>
+                                <v-input>Nama Menu</v-input>
                             </div>
                             <v-text-field                                
                                 flat
                                 solo
                                 dense
                                 background-color="grey lighten-4"                                
-                                label="Nama Menu"                 
+                                label="Nama Menu"     
+                                v-model="form.nama"            
                             ></v-text-field>
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Harga</v-inputs>
+                                <v-input>Harga</v-input>
                             </div>
                             <v-text-field                                
                                 flat
                                 solo
                                 dense
                                 background-color="grey lighten-4"                                
-                                label="Harga"                 
+                                label="Harga"            
+                                type="number"             
+                                v-model="form.harga"                        
                             ></v-text-field>
                            </div>                                                                                                            
-                           <div class="mb-3">
+                           <!-- <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Deskripsi</v-inputs>
+                                <v-input>Deskripsi</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -71,7 +79,7 @@
                                 background-color="grey lighten-4"                                
                                 label="Deskripsi"
                             ></v-text-field>
-                           </div>           
+                           </div>            -->
                        </v-col>
                    </v-row>       
                    <div class="d-flex justify-end">
@@ -81,7 +89,7 @@
                             </v-btn>
                        </div>          
                         <div class="mx-2">
-                           <v-btn color="primary" large>
+                           <v-btn color="primary" type="submit" large>
                                <v-icon>
                                    mdi-save
                                </v-icon>
@@ -89,6 +97,7 @@
                             </v-btn>
                        </div>          
                    </div>             
+                   </form>
                </v-container>               
            </v-card>
         </v-container>
@@ -96,40 +105,62 @@
     </div>    
 </template>
 <script>
-import vue2Dropzone from 'vue2-dropzone'
+import { mapGetters, mapActions } from 'vuex'
+// import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
     props: ["card"],
-    components: {
-        'vue-dropzone': vue2Dropzone
-    },
+    // components: {
+    //     'vue-dropzone': vue2Dropzone
+    // },
     data() {
-        return{                       
+        return{    
+            handlerKategori: '',
             form: {
-                username: '',
-                password: '',
-                foto: '',
+                kategori: '',                
                 nama: '',
-                jk: '',
-                noTelp : '',
-                email: '',
-                alamat: ''
+                harga: ''
             },
             rules: {
                 required: value => !!value || 'Required.',
-                counter: value => value.length <= 20 || 'Max 20 characters',
-                email: value => {
-                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                    return pattern.test(value) || 'Invalid e-mail.'
-                },
-            }
+                counter: value => value.length <= 20 || 'Max 20 characters',                
+            },
+            kategori: []            
         }
     },    
+    async mounted(){
+        await this.loadKategori()        
+        this.getKategori.forEach(item => {
+            this.kategori.push({
+                'state' : item.nama.replace(/\b\w/g, l => l.toUpperCase()),
+                'id' : item.id
+            })
+        });           
+        console.log(this.kategori)
+    },
     methods: {
+        ...mapActions([
+            'loadKategori',
+            'postMenu'
+        ]),
         closeProfile(){
             this.profile = false
+        },
+        async submitHandler(){
+            const status = await this.postMenu(this.form)
+            if(status) this.$router.push({'name' : 'Menu'})
         }
-    }
+    },
+    computed: {
+        ...mapGetters([
+            'getKategori'
+        ])
+    },
+    watch: {
+        handlerKategori(data){
+            this.form.kategori = data.id
+        }
+    } 
 }
 </script>
 

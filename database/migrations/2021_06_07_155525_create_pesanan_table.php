@@ -18,7 +18,7 @@ class CreatePesananTable extends Migration
             $table->bigInteger('no_meja')->unsigned();
             $table->bigInteger('pegawai_id')->unsigned();
             $table->integer('no_antrian');
-            $table->enum('status', ['foo', 'bar']);
+            $table->enum('status', ['menunggu', 'diproses', 'selesai', 'habis']);
             $table->timestamps();
 
             $table->foreign('no_meja')

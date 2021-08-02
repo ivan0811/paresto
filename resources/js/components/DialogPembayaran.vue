@@ -25,9 +25,9 @@
         </div>                         
         <v-sheet class="mb-5 pa-5">
             <div class="text-subheader-1 greyDark--text mb-2">Jumlah harga yang harus dibayar</div>         
-            <div class="text-h6 mb-4">Rp 426.000</div>                                 
+            <div class="text-h6 mb-4">Rp {{countTotalHarga}}</div>                                 
             <div class="mb-3">
-                <v-inputs>Nominal</v-inputs>
+                <v-input>Nominal</v-input>
             </div>
             <v-text-field                                
                 flat
@@ -35,6 +35,7 @@
                 dense
                 background-color="grey lighten-4"                                                                
                 label="Masukkan Nominal"
+                v-model="total_bayar"
             ></v-text-field>                                        
         </v-sheet>  
 
@@ -42,8 +43,11 @@
           <v-spacer></v-spacer>
             <v-btn color="primary" outlined elevation="0" large>
                 Batal
-            </v-btn>               
-            <v-btn color="primary" elevation="0" large>
+            </v-btn> 
+            <v-btn @click="$emit('bayar', total_bayar)" v-if="total_bayar >= countTotalHarga" color="primary" elevation="0" large>
+                Bayar
+            </v-btn>           
+            <v-btn v-else disabled color="primary" elevation="0" large>
                 Bayar
             </v-btn>           
         </v-card-actions>
@@ -54,6 +58,20 @@
 </template>
 <script>
   export default {
-    props: ['dialog']    
+    props: ['dialog', 'detail'],
+    data(){
+      return {
+        total_bayar: 0
+      }
+    },   
+    computed: {
+        countTotalHarga(){             
+            let harga = this.detail.detail_pesanan.map(val => {
+                return val.menu.harga * val.jumlah
+            })                        
+                
+            return harga.length > 0 ? harga.reduce((total, num) => total + num) : 0
+        },
+    }
   }
 </script>

@@ -36,7 +36,7 @@
                        <v-col lg="6" md="12" sm="12">              
                             <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>No Telp</v-inputs>
+                                <v-input>No Telp</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -49,7 +49,7 @@
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Email</v-inputs>
+                                <v-input>Email</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -63,7 +63,7 @@
                            </div>                  
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Jenis Kelamin</v-inputs>
+                                <v-input>Jenis Kelamin</v-input>
                             </div>
                              <v-radio-group
                                 v-model="jk"
@@ -84,7 +84,7 @@
                            </div>                                                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Alamat</v-inputs>
+                                <v-input>Alamat</v-input>
                             </div>
                             <v-text-field                                
                                 flat

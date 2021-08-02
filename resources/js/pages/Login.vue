@@ -18,7 +18,7 @@
                                     cols="12"
                                     >
                                     <div class="mb-3">
-                                        <v-inputs>Username</v-inputs>
+                                        <v-input>Username</v-input>
                                     </div>
                                     <v-text-field
                                         :label="autoFilled ? 'Username' : ''"
@@ -32,7 +32,7 @@
                                     cols="12"
                                     >
                                     <div class="mb-3">
-                                        <v-inputs>Password</v-inputs>
+                                        <v-input>Password</v-input>
                                     </div>
                                     <v-text-field
                                         :label="autoFilled ? 'Password' : ''"

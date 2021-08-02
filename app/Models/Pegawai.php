@@ -15,4 +15,9 @@ class Pegawai extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'pegawai_id');
+    }
 }

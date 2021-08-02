@@ -22,7 +22,7 @@
             <v-btn  @click="$emit('close')" color="primary" outlined elevation="0" large>
                 Batal
             </v-btn>               
-            <v-btn color="primary" elevation="0" large>
+            <v-btn @click="$emit('save')" color="primary" elevation="0" large>
                 Simpan
             </v-btn>           
         </v-card-actions>

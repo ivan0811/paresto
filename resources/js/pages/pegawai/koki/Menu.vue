@@ -41,7 +41,7 @@
                     </div>
                 </v-col>
 
-                 <v-col cols="4">
+                 <v-col cols="4" v-for="(item, index) in menu" :key="index">
                     <v-card v-bind="card">
                         <v-list two-line>
                             <v-list-item>
@@ -49,8 +49,8 @@
                                     <v-img></v-img>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
-                                    <v-list-item-title v-html="'Argya Aulia'" class="mb-2"></v-list-item-title>
-                                    <v-list-item-subtitle v-html="'Admin'"></v-list-item-subtitle>
+                                    <v-list-item-title v-html="item.nama" class="mb-2"></v-list-item-title>
+                                    <v-list-item-subtitle class="red--text" v-html="'Rp ' + item.harga"></v-list-item-subtitle>
                                 </v-list-item-content>
                                 <v-list-item-action class="mt-0">
                                     <v-menu offset-y>
@@ -63,10 +63,10 @@
                                         </v-btn>
                                     </template>
                                      <v-list>
-                                        <v-list-item>
+                                        <v-list-item :to="{name: 'editMenu', params: {id : item.id}}">
                                             <v-list-item-title>Edit</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item>
+                                        <v-list-item @click="deleteHandler(item.id)">
                                             <v-list-item-title>Delete</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
@@ -75,66 +75,39 @@
                             </v-list-item>
                         </v-list>
                     </v-card>
-                </v-col>
-
-                <v-col cols="4">
-                    <v-card v-bind="card" @click.stop="profile = !profile">
-                        <v-list two-line>
-                            <v-list-item>
-                                <v-list-item-avatar rounded color="blue">
-                                    <v-img></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title v-html="'Argya Aulia'" class="mb-2"></v-list-item-title>
-                                    <v-list-item-subtitle v-html="'Admin'"></v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action class="mt-0">
-                                    <v-btn icon>
-                                        <v-icon>mdi-dots-vertical</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-col>
-
-                <v-col cols="4">
-                    <v-card v-bind="card">
-                        <v-list two-line>
-                            <v-list-item>
-                                <v-list-item-avatar rounded color="blue">
-                                    <v-img></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title v-html="'Argya Aulia'" class="mb-2"></v-list-item-title>
-                                    <v-list-item-subtitle v-html="'Admin'"></v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action class="mt-0">
-                                    <v-btn icon>
-                                        <v-icon>mdi-dots-vertical</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-col>
+                </v-col>              
             </v-row>
         </v-container>
     </v-main>    
     </div>    
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {    
     props: ["card"],
     data() {
         return{            
-            profile: false
+            menu: []
         }
     },    
+    async mounted() {
+        await this.loadMenu()
+        this.menu = this.getMenu                
+    },
     methods: {
-        closeProfile(){
-            this.profile = false
-        }
+        ...mapActions([
+            'loadMenu',
+            'deleteMenu'
+        ]),
+        async deleteHandler(id){
+            const status = await this.deleteMenu(id)     
+            if(status) this.menu = this.getMenu                
+        }        
+    },
+    computed:{
+        ...mapGetters([
+            'getMenu'
+        ])
     }
 }
 </script>

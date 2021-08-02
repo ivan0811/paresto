@@ -1,6 +1,6 @@
 <template>
     <div>        
-        <side-profile @close="closeProfile" :drawer="profile"></side-profile>
+        <side-profile @close="closeProfile" :detail="detail" :drawer="profile"></side-profile>
         <v-main style="min-height: 100vh">        
         <v-container class="pa-8">
             <v-row>
@@ -42,16 +42,16 @@
                     </div>
                 </v-col>
 
-                 <v-col cols="4">
-                    <v-card v-bind="card">
+                 <v-col cols="4" v-for="(item, index) in pegawai" :key="index">
+                    <v-card v-bind="card" @click.stop="setDetail(item)">
                         <v-list two-line>
                             <v-list-item>
                                 <v-list-item-avatar rounded color="blue">
                                     <v-img></v-img>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
-                                    <v-list-item-title v-html="'Argya Aulia'" class="mb-2"></v-list-item-title>
-                                    <v-list-item-subtitle v-html="'Admin'"></v-list-item-subtitle>
+                                    <v-list-item-title v-html="item.user.nama" class="mb-2"></v-list-item-title>
+                                    <v-list-item-subtitle v-html="item.user.roles"></v-list-item-subtitle>
                                 </v-list-item-content>
                                 <v-list-item-action class="mt-0">
                                     <v-menu offset-y>
@@ -64,10 +64,10 @@
                                         </v-btn>
                                     </template>
                                      <v-list>
-                                        <v-list-item>
+                                        <v-list-item :to="{name: 'editPegawai', params: {id : item.user.id}}">
                                             <v-list-item-title>Edit</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item>
+                                        <v-list-item @click="handleDelete(item.user.id)">
                                             <v-list-item-title>Delete</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
@@ -76,49 +76,7 @@
                             </v-list-item>
                         </v-list>
                     </v-card>
-                </v-col>
-
-                <v-col cols="4">
-                    <v-card v-bind="card" @click.stop="profile = !profile">
-                        <v-list two-line>
-                            <v-list-item>
-                                <v-list-item-avatar rounded color="blue">
-                                    <v-img></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title v-html="'Argya Aulia'" class="mb-2"></v-list-item-title>
-                                    <v-list-item-subtitle v-html="'Admin'"></v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action class="mt-0">
-                                    <v-btn icon>
-                                        <v-icon>mdi-dots-vertical</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-col>
-
-                <v-col cols="4">
-                    <v-card v-bind="card">
-                        <v-list two-line>
-                            <v-list-item>
-                                <v-list-item-avatar rounded color="blue">
-                                    <v-img></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title v-html="'Argya Aulia'" class="mb-2"></v-list-item-title>
-                                    <v-list-item-subtitle v-html="'Admin'"></v-list-item-subtitle>
-                                </v-list-item-content>
-                                <v-list-item-action class="mt-0">
-                                    <v-btn icon>
-                                        <v-icon>mdi-dots-vertical</v-icon>
-                                    </v-btn>
-                                </v-list-item-action>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-col>
+                </v-col>             
             </v-row>
         </v-container>
     </v-main>    
@@ -126,18 +84,53 @@
 </template>
 <script>
 import sideProfile from '../../components/SideProfile.vue';
+import { mapGetters, mapActions } from "vuex";
 export default {
     components: {'side-profile' : sideProfile},
     props: ["card"],
     data() {
         return{            
-            profile: false
+            profile: false,
+            pegawai: [],
+            detail: {}            
         }
     },    
+    async mounted() {
+        await this.loadPegawai()              
+        this.pegawai = this.getPegawai        
+        console.log(this.pegawai)
+    },
     methods: {
+        ...mapActions([
+            'loadPegawai',
+            'deletePegawai'            
+        ]),
         closeProfile(){
             this.profile = false
-        }
+        },
+        setDetail(item){            
+            this.profile = !this.profile
+            const user = item.user            
+            this.detail = {
+                'nama' : user.nama,
+                'role' : user.roles,
+                'no_telp' : item.no_telp,
+                'jk' : item.jk == 'L' ? 'Laki-laki' : 'Perempuan',
+                'alamat' : item.alamat
+            }
+        },
+        async handleDelete(id){
+            const pegawai = await this.deletePegawai(id)            
+            if(pegawai){
+                this.pegawai = this.getPegawai
+            }
+            console.log(pegawai)
+        }                 
+    },
+    computed: {
+        ...mapGetters([
+            'getPegawai'
+        ])
     }
 }
 </script>

@@ -12,7 +12,7 @@
                 </v-col>                    
                 <v-col class="d-flex pt-0 pb-5" cols="12">
                     <v-alert v-bind="attrs" v-on="on" :style="customStyleAlert" class="me-2 py-1 px-4 text-subheader-1 mb-auto" dense>                        
-                            Total Pesanan 4                                                                                                                                   
+                            Total Pesanan {{pesanan.filter(item => item.status != 'selesai').length}}                                                                                                                                   
                     </v-alert>
                      <v-btn
                             text
@@ -33,33 +33,34 @@
                 </v-col>  
                 <v-col cols="12">                          
                     <div class="d-flex overflow-x-auto" style="width: 100%">
-                             <v-card v-bind="card" width="max-content" class="me-8">                                      
-                                <v-container class="pa-5" style="width: 300px">                                                                                               
+                             <v-card v-for="(detail, i) in pesanan.filter(item => item.status != 'selesai')" :key="i" v-bind="card" width="max-content" class="me-8">                                      
+                                <v-container class="pa-5" style="width: 320px">                                                                                               
                                          <div class="d-flex justify-space-between">
                                             <div class="d-flex">
-                                                <v-avatar rounded="" color="primary"></v-avatar>
+                                                <v-avatar rounded="" color="primary">
+                                                    <p class="white--text mb-0">{{detail.no_antrian}}</p>
+                                                </v-avatar>
                                                 <div class="ms-3">
-                                                    <p class="text-subtitle-1 ma-0">Meja #34</p>
-                                                    <p class="text-caption greyDark--text ma-0">Oleh Ivan</p>
+                                                    <p class="text-subtitle-1 ma-0">Meja #{{detail.no_meja}}</p>
+                                                    <p class="text-caption greyDark--text ma-0">Oleh {{detail.pegawai.user.username}}</p>
                                                 </div>            
-                                                                                                
                                             </div>                
                                             <v-menu offset-y>                                            
                                                 <template v-slot:activator="{on, attrs}">   
-                                                    <v-alert v-bind="attrs" v-on="on" class="py-1 px-4 rounded-pill text-caption mb-auto" color="success" text dense>
+                                                    <v-alert v-bind="attrs" v-on="on" class="py-1 px-4 rounded-pill text-caption mb-auto" :color="getAlertStatus(detail.status)" text dense>                                                                                                                                                                                                    
                                                         <v-row>
-                                                            <v-col>Diproses</v-col>
-                                                            <v-col></v-col>
-                                                        </v-row>                                                                                     
+                                                            <v-col>{{detail.status == 'habis' ? 'Stock Habis' : detail.status}}</v-col>
+                                                            <v-col cols="2"></v-col>
+                                                        </v-row>                                                       
                                                     </v-alert>
                                                 </template>
                                                   <v-list>
-                                                    <v-list-item>
+                                                    <v-list-item @click="updateStatusPesananHandler(detail.id, 'diproses')">
                                                         <v-alert class="py-1 px-4 rounded-pill text-caption mb-0" color="success" text dense>                                                               
                                                             Diproses                                                                                  
                                                         </v-alert>
                                                     </v-list-item>
-                                                    <v-list-item @click="stockHabis()">
+                                                    <v-list-item @click="stockHabis(detail)">
                                                         <v-alert class="py-1 px-4 rounded-pill text-caption mb-0" color="error" text dense>                                                               
                                                             Ditahan, Stock Habis                                                                     
                                                         </v-alert>
@@ -68,87 +69,33 @@
                                             </v-menu>                                            
                                         </div>    
                                         <div class="overflow-y-auto my-8" style="height: 240px">                                            
-                                            <div class="d-flex justify-space-between">
+                                            <div class="d-flex justify-space-between mb-5" v-for="(item, j) in detail.detail_pesanan" :key="j">
                                                 <div>
-                                                    <p class="text-subheader-1 mb-0">Nasi Goreng Spesial</p>
-                                                    <p class="text-caption greyDark--text mb-0">Tidak pakai sambel</p>
+                                                    <p class="text-subheader-1 mb-0">{{item.menu.nama}}</p>
+                                                    <!-- <p class="text-caption greyDark--text mb-0">Tidak pakai sambel</p> -->
                                                 </div>           
-                                                <p class="my-auto text-subheader-1">x4</p>
-                                            </div>
+                                                <p class="my-auto text-subheader-1">x{{item.jumlah}}</p>
+                                            </div>                                                                                                                                     
                                         </div>   
                                         <div class="d-flex">
                                             <v-spacer></v-spacer>
-                                            <v-btn color="primary" large>Tandai Selesai</v-btn>                                     
+                                            <v-btn color="primary" @click="updateStatusPesananHandler(detail.id, 'selesai')" v-if="detail.status == 'diproses'" large>Tandai Selesai</v-btn>                                     
+                                            <v-btn color="primary" v-else disabled large>Tandai Selesai</v-btn>                                     
                                         </div>                                        
                                 </v-container>
-                            </v-card>
-                            <v-card v-bind="card" width="max-content" class="me-8">                            
-                                <v-container class="py-2 px-5">                       
-                                    <v-list>
-                                        <v-list>
-                                            <v-list-item two-line>
-                                                <v-list-item-content>
-                                                    <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>                                           
-                                                    <v-list-item-subtitle>Tidak pakai sambel</v-list-item-subtitle>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-list>                        
-                                </v-container>
-                            </v-card>
-                            <v-card v-bind="card" width="max-content" class="me-8">                            
-                                <v-container class="py-2 px-5">                       
-                                    <v-list>
-                                        <v-list>
-                                            <v-list-item two-line>
-                                                <v-list-item-content>
-                                                    <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>                                           
-                                                    <v-list-item-subtitle>Tidak pakai sambel</v-list-item-subtitle>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-list>                        
-                                </v-container>
-                            </v-card>
-                            <v-card v-bind="card" width="max-content" class="me-8">                            
-                                <v-container class="py-2 px-5">                       
-                                    <v-list>
-                                        <v-list>
-                                            <v-list-item two-line>
-                                                <v-list-item-content>
-                                                    <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>                                           
-                                                    <v-list-item-subtitle>Tidak pakai sambel</v-list-item-subtitle>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-list>                        
-                                </v-container>
-                            </v-card>
-                            <v-card v-bind="card" width="max-content" class="me-8">                            
-                                <v-container class="py-2 px-5">                       
-                                    <v-list>
-                                        <v-list>
-                                            <v-list-item two-line>
-                                                <v-list-item-content>
-                                                    <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>                                           
-                                                    <v-list-item-subtitle>Tidak pakai sambel</v-list-item-subtitle>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-list>                        
-                                </v-container>
-                            </v-card>           
+                            </v-card>                            
                             </div>                                                                                                       
                 </v-col>
             </v-row>
         </v-container>
     </v-main>        
-    <send-notif @close="closeSideSendNotif" :drawer="sideSendNotif"></send-notif>
+    <send-notif @save="sendNotif" :detail="detail" @close="closeSideSendNotif" :drawer="sideSendNotif"></send-notif>
     </div>    
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import sideSendNotif from '../../../components/SideSendNotif.vue'
-export default {
+export default {    
     components: {
         'send-notif' : sideSendNotif        
     },
@@ -160,20 +107,64 @@ export default {
               borderRadius: '8px',
               backgroundColor: 'transparent',
               border: '2px solid #CDC8C3'
-          }
+          },
+          pesanan: [],
+          alertStatus: {
+              menunggu: 'blue',
+              diproses: 'success',
+              habis: 'red',
+              selesai: 'orange'
+          },
+          detail: {},
+          sendNotifStock: []  
         }
     },    
+    async mounted(){
+        await this.setPesanan()                               
+    },
     methods: {
-      closeSideSendNotif(){
-          this.sideSendNotif = false
-      },
-      stockHabis(){
-          this.sideSendNotif = true
-      }
+        ...mapActions([
+            'loadPesanan',
+            'deletePesanan',
+            'updateStatusPesanan',
+            'updateStatusMenu',
+            'updateStatusPesananMenu'            
+        ]),    
+        closeSideSendNotif(){
+            this.sideSendNotif = false
+        },
+        async setPesanan(){
+            await this.loadPesanan()
+            this.pesanan = this.getPesanan 
+        },
+        getAlertStatus(status){
+            return this.alertStatus[status]
+        },
+        stockHabis(pesanan){
+            this.sideSendNotif = true
+            this.detail = pesanan
+        },
+        async updateStatusPesananHandler(id, status){            
+            const res = await this.updateStatusPesanan({id, status})            
+            if(res) await this.setPesanan()
+        },
+        async sendNotif(menu_id){            
+            let statusPesanan = await this.updateStatusPesananMenu({id: menu_id})            
+            let statusMenu = await this.updateStatusMenu({id: menu_id})
+            if(statusPesanan && statusMenu) {
+                await this.setPesanan()
+                this.closeSideSendNotif()
+            }
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'getPesanan'
+        ])
     }
 }
 </script>
-<style scoped>
+<style>
 .v-slide-group__wrapper {
   overflow-x: auto; /* Enables the horizontal scrollbar */
   /* Next lines hides scrollbar in different browsers for styling purposes */

@@ -23,7 +23,8 @@ export default new Vuetify({
                 tableInOrder: '#EFB256',
                 tableActive: '#6BC899',
                 blue: '#5A95CC',
-                brownDarker: '#48332E'                
+                brownDarker: '#48332E',
+                orange: '#DAA407'
             },
         },
     },

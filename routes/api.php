@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PesananController;
+use App\Http\Controllers\TransaksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,24 +34,51 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
 
     Route::group(['middleware' => 'Admin'], function(){
         Route::get('/test', [UserController::class, 'coba']);
-        Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai');
-        Route::post('/pegawai', [PegawaiController::class, 'create'])->name('pegawai');
-        Route::get('/pegawai/{pegawai}', [PegawaiController::class, 'show'])->name('pegawai');
+        Route::prefix('pegawai')->group(function () {
+            Route::get('/', [PegawaiController::class, 'index']);
+            Route::post('/', [PegawaiController::class, 'store']);
+            Route::get('/{id}', [PegawaiController::class, 'edit']);
+            Route::patch('/{id}', [PegawaiController::class, 'update']);
+            Route::delete('/{id}', [PegawaiController::class, 'destroy']);
+        });                
     });
+
+    Route::get('/pesanan', [PesananController::class, 'show']);
+    Route::patch('/pesanan/update-status/{id}', [PesananController::class, 'updateStatus']);
+    Route::post('/pesanan/update-status/menu', [PesananController::class, 'updateStatusPesananMenu']);    
 
     Route::group(['middleware' => 'Pelayan'], function(){
-        Route::get('/meja', [PesananController::class, 'meja']);
-        Route::patch('/update-meja', [PesananController::class, 'updateMeja']);
-
+        Route::prefix('meja')->group(function () {
+            Route::get('/', [PesananController::class, 'meja']);
+            Route::patch('/{no_meja}', [PesananController::class, 'updateMeja']); 
+        });               
+        Route::prefix('pesanan')->group(function () {            
+            Route::post('/', [PesananController::class, 'store']);
+            Route::get('/{id}', [PesananController::class, 'edit']);
+            Route::patch('/{id}', [PesananController::class, 'update']);
+            Route::delete('/{id}', [PesananController::class, 'destroy']);
+        });
     });
+
+    Route::get('/menu', [MenuController::class, 'index']);
+    Route::get('/kategori', [MenuController::class, 'kategori']);
+    Route::post('/menu/update-status', [MenuController::class, 'updateStatus']);
 
     Route::group(['middleware' => 'Koki'], function(){
-        Route::get('/menu', [MenuController::class, 'index'])->name('menu');
-        Route::post('/menu/{menu}', [MenuController::class, 'show'])->name('menu');
-    });
+        Route::prefix('menu')->group(function () {                        
+            Route::post('/', [MenuController::class, 'store']);
+            Route::get('/{id}', [MenuController::class, 'edit']);
+            Route::patch('/{id}', [MenuController::class, 'update']);
+            Route::delete('/{id}', [MenuController::class, 'destroy']);
+        });                
+    });        
 
     Route::group(['middleware' => 'Kasir'], function(){
-        
+        Route::prefix('transaksi')->group(function () {
+            Route::get('/', [TransaksiController::class, 'show']);
+            Route::post('/', [TransaksiController::class, 'store']);             
+            Route::delete('/{id}', [TransaksiController::class, 'destroy']); 
+        });        
     });
 });
 

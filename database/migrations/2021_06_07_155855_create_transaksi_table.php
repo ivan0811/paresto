@@ -17,13 +17,12 @@ class CreateTransaksiTable extends Migration
             $table->string('kd_transaksi')->unique()->primary();
             $table->bigInteger('pegawai_id')->unsigned();
             $table->bigInteger('pesanan_id')->unsigned();
-            $table->integer('total_bayar');
-            $table->integer('nama_pelanggan');
+            $table->integer('total_bayar');            
             $table->timestamps();
 
             $table->foreign('pesanan_id')
             ->references('id')
-            ->on('users')
+            ->on('pesanan')
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });

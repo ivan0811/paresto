@@ -4,13 +4,14 @@
         <v-container class="px-8">
            <v-card v-bind="card">
                <v-container class="pa-5">
+                   <form @submit.prevent="submitHandler">                   
                    <v-row>
                        <v-col cols="6">
                          <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Upload Foto</v-inputs>
+                                <v-input>Upload Foto</v-input>
                             </div>
-                            <vue-dropzone
+                            <!-- <vue-dropzone
                             ref="myVueDropzone"
                             :useCustomSlot="true"
                             id="dropzone"
@@ -19,11 +20,11 @@
                             @vdropzone-file-added="fileAdded"
                             @vdropzone-sending-multiple="sendingFiles"
                             @vdropzone-success-multiple="success"
-                            ></vue-dropzone>
+                            ></vue-dropzone> -->
                            </div>          
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Roles</v-inputs>
+                                <v-input>Roles</v-input>
                             </div>
                                 <v-select
                                 dense
@@ -32,11 +33,12 @@
                                 background-color="grey lighten-4"           
                                 :items="['Admin', 'Pelayan', 'Kasir', 'Koki']"
                                 label="Pilih Roles"
+                                v-model="form.roles"
                                 ></v-select>
                            </div>     
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Username</v-inputs>
+                                <v-input>Username</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -44,11 +46,12 @@
                                 dense
                                 background-color="grey lighten-4"                                                                
                                 label="Username"
+                                v-model="form.username"
                             ></v-text-field>                            
                            </div>     
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Password</v-inputs>
+                                <v-input>Password</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -56,14 +59,15 @@
                                 dense
                                 background-color="grey lighten-4"      
                                 type="password"
-                                label="Password"                          
+                                label="Password"     
+                                v-model="form.password"                     
                             ></v-text-field>
                            </div>     
                        </v-col>
                        <v-col cols="6">
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Nama Lengkap</v-inputs>
+                                <v-input>Nama Lengkap</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -71,14 +75,15 @@
                                 dense
                                 background-color="grey lighten-4"                                
                                 label="Nama Lengkap"                 
+                                v-model="form.nama"
                             ></v-text-field>
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Jenis Kelamin</v-inputs>
+                                <v-input>Jenis Kelamin</v-input>
                             </div>
                              <v-radio-group
-                                v-model="jk"
+                                v-model="form.jk"
                                 row     
                                 class="ma-0"                                     
                                 >
@@ -96,7 +101,7 @@
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>No Telp</v-inputs>
+                                <v-input>No Telp</v-input>
                             </div>
                             <v-text-field                                
                                 flat
@@ -105,33 +110,35 @@
                                 background-color="grey lighten-4"                                
                                 type="number"
                                 label="No Telp"
+                                v-model="form.noTelp"
                             ></v-text-field>
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Email</v-inputs>
+                                <v-input>Email</v-input>
                             </div>
                             <v-text-field                                
                                 flat
                                 solo
                                 dense
                                 background-color="grey lighten-4"                                
-                                v-model="email"
+                                v-model="form.email"
                                 :rules="[rules.required, rules.email]"
                                 label="E-mail"
                             ></v-text-field>
                            </div>       
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-inputs>Alamat</v-inputs>
-                            </div>
-                            <v-text-field                                
+                                <v-input>Alamat</v-input>
+                            </div>                         
+                            <v-textarea                                                            
                                 flat
                                 solo
                                 dense
-                                background-color="grey lighten-4"                                
                                 label="Alamat"
-                            ></v-text-field>
+                                background-color="grey lighten-4"
+                                v-model="form.alamat"                                
+                            ></v-textarea>
                            </div>           
                        </v-col>
                    </v-row>       
@@ -142,14 +149,15 @@
                             </v-btn>
                        </div>          
                         <div class="mx-2">
-                           <v-btn color="primary" large>
+                           <v-btn color="primary" type="submit" large>
                                <v-icon>
                                    mdi-save
                                </v-icon>
                                 Simpan
                             </v-btn>
                        </div>          
-                   </div>             
+                   </div>    
+                   </form>         
                </v-container>               
            </v-card>
         </v-container>
@@ -157,24 +165,25 @@
     </div>    
 </template>
 <script>
-import vue2Dropzone from 'vue2-dropzone'
-import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import { mapGetters, mapActions } from 'vuex'
+// import vue2Dropzone from 'vue2-dropzone'
+// import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
     props: ["card"],
-    components: {
-        'vue-dropzone': vue2Dropzone
-    },
+    // components: {
+    //     'vue-dropzone': vue2Dropzone
+    // },
     data() {
-        return{                       
+        return{                          
             form: {
                 username: '',
-                password: '',
-                foto: '',
+                password: '',                
                 nama: '',
                 jk: '',
                 noTelp : '',
                 email: '',
-                alamat: ''
+                alamat: '',
+                roles: ''
             },
             rules: {
                 required: value => !!value || 'Required.',
@@ -187,9 +196,26 @@ export default {
         }
     },    
     methods: {
+        ...mapActions([
+            'postPegawai'
+        ]),
         closeProfile(){
             this.profile = false
+        },
+        async submitHandler(){
+            const pegawai = await this.postPegawai(this.form)            
+            if(pegawai){
+                this.$router.push({
+                    name: 'Pegawai'
+                })
+            }
+            console.log(pegawai)            
         }
+    },
+    computed: {
+        ...mapGetters([
+            
+        ])
     }
 }
 </script>

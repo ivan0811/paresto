@@ -29,19 +29,19 @@
 }
 
 .icon-group{
-    -webkit-mask-image: url(/images/icon-group.svg?22209de993db02d081de3cd22a3fdb9b);    
+    -webkit-mask-image: url(/images/icon-group.svg?d183656d6eef6b1a96ff50f0af7d9d97);    
 }
 
 .icon-cocktail{
-    -webkit-mask-image: url(/images/icon-cocktail.svg?41f086d039747b94b243cfdec10db047);
+    -webkit-mask-image: url(/images/icon-cocktail.svg?f30ef3b6df1633c56ca7075489e5864c);
 }
 
 .icon-nuggets{
-    -webkit-mask-image: url(/images/icon-nuggets.svg?aae1008833f8ee05a2aedcb3132ebc21);
+    -webkit-mask-image: url(/images/icon-nuggets.svg?5ed829e8925b2c8f66a1de329627a6de);
 }
 
 .icon-dish{
-    -webkit-mask-image: url(/images/icon-dish.svg?c367262099a57b76db5bca8ff463a676);
+    -webkit-mask-image: url(/images/icon-dish.svg?f32f9fccbfb25fc728584352e08c4b0f);
 }
 
 .icon{
@@ -95,4 +95,9 @@
 
 .v-sheet.v-card {
   border-radius: 12px;
+}
+
+button.theme--light.v-btn.v-btn--disabled.v-btn--has-bg {
+  color: white !important;
+  background-color: #9A9590 !important;
 }

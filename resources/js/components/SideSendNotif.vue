@@ -18,194 +18,38 @@
             </div>            
             <div class="d-flex justify-space-between">
                 <div>
-                    <p class="text-subtitle-2 text--secondary ma-0">Ivan Faathirza</p>                    
+                    <p class="text-subtitle-2 text--secondary ma-0">{{detail.pegawai.user.nama}}</p>                    
                 </div>                
-                <p class="text-subtitle-2 text--secondary ma-0">Meja #34</p>
+                <p class="text-subtitle-2 text--secondary ma-0">Meja #{{detail.no_meja}}</p>
             </div>
         </v-sheet>
         <v-sheet class="mb-auto" height="60vh">
             <v-list class="overflow-y-auto" height="100%">
-                <v-list-item two-line class="pa-0 pe-2">             
+                <v-list-item v-for="(item, i) in detail.detail_pesanan" :key="i" two-line class="pa-0 pe-2">             
                     <v-list-item-avatar rounded>
                         <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
+                        <v-list-item-title>{{item.menu.nama}}</v-list-item-title>
+                        <v-list-item-subtitle>Rp {{item.menu.harga}}</v-list-item-subtitle>                        
                     </v-list-item-content>                                                 
                     <v-list-item-action>                        
                         <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
+                            <v-list-item-title class="me-2">x{{item.jumlah}}</v-list-item-title>                                             
+                            <v-checkbox                    
+                                :value="item.menu.id"
+                                v-model="stockMenu"
                             ></v-checkbox>
                         </div>                        
                     </v-list-item-action>                                                                                          
                 </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                 <v-list-item two-line class="pa-0 pe-2">             
-                    <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Nasi Goreng Spesial</v-list-item-title>
-                        <v-list-item-subtitle>Rp 17000</v-list-item-subtitle>                        
-                    </v-list-item-content>                                                 
-                    <v-list-item-action>                        
-                        <div class="d-flex">
-                            <v-list-item-title class="me-2">x4</v-list-item-title>                                             
-                            <v-checkbox                                                
-                            ></v-checkbox>
-                        </div>                        
-                    </v-list-item-action>                                                                                          
-                </v-list-item>
-                
             </v-list>
         </v-sheet>             
         <div class="d-flex justify-end mx-2 mt-auto">
-                <v-btn color="primary" elevation="0" large>
+                <v-btn color="primary" @click="$emit('save', stockMenu)" v-if="stockMenu.length > 0" elevation="0" large>
+                    Kirim Ke Pelayan
+                </v-btn>            
+                <v-btn v-else color="primary" disabled elevation="0" large>
                     Kirim Ke Pelayan
                 </v-btn>               
             </div>                
@@ -215,6 +59,11 @@
 </template>
 <script>
 export default {        
-    props: ['drawer'],    
+    props: ['drawer', 'detail'],     
+    data(){
+        return {
+            stockMenu: []
+        }        
+    }    
 }
 </script>

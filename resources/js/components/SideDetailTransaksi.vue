@@ -128,6 +128,6 @@
 </template>
 <script>
 export default {        
-    props: ['drawer'],    
+    props: ['drawer']    
 }
 </script>

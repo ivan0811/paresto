@@ -17,7 +17,7 @@
         >
             <v-avatar rounded color="blue"></v-avatar>            
         </div>
-        <p class="text-center text-h6">Argya Aulia</p>
+        <p class="text-center text-h6">{{detail.nama}}</p>
         <p class="text-center text-subtitle-2 text--secondary mb-0">Bergabung sejak</p>
         <p class="text-center">30 Mei 2019</p>        
       </v-sheet>
@@ -25,25 +25,25 @@
             <v-list-item two-line>
                 <v-list-item-content>
                     <v-list-item-subtitle class="text-subtitle-2 mb-3">Roles</v-list-item-subtitle>
-                    <v-list-item-title class="">Admin</v-list-item-title>                    
+                    <v-list-item-title class="">{{detail.role}}</v-list-item-title>                    
                 </v-list-item-content>
             </v-list-item>
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-subtitle class="text-subtitle-2 mb-3">Roles</v-list-item-subtitle>
-                    <v-list-item-title class="">Admin</v-list-item-title>        
+                    <v-list-item-subtitle class="text-subtitle-2 mb-3">No Telp</v-list-item-subtitle>
+                    <v-list-item-title class="">{{detail.no_telp}}</v-list-item-title>        
                 </v-list-item-content>
             </v-list-item>
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-subtitle class="text-subtitle-2 mb-3">Roles</v-list-item-subtitle>
-                    <v-list-item-title class="">Admin</v-list-item-title>        
+                    <v-list-item-subtitle class="text-subtitle-2 mb-3">Jenis Kelamin</v-list-item-subtitle>
+                    <v-list-item-title class="">{{detail.jk}}</v-list-item-title>        
                 </v-list-item-content>
             </v-list-item>
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-subtitle class="text-subtitle-2 mb-3">Roles</v-list-item-subtitle>
-                    <v-list-item-title class="">Admin</v-list-item-title>        
+                    <v-list-item-subtitle class="text-subtitle-2 mb-3">Alamat</v-list-item-subtitle>
+                    <v-list-item-title class="">{{detail.alamat}}</v-list-item-title>        
                 </v-list-item-content>
             </v-list-item>
         </v-list>    
@@ -53,7 +53,7 @@
 </template>
 <script>
 export default {        
-    props: ['drawer'],
+    props: ['drawer', 'detail'],
     mounted(){
         console.log(this.drawer)
     },
@@ -61,7 +61,7 @@ export default {
         
     },
     watch:{
-        drawer(e){
+        detail(e){
             console.log(e)
         }
     }
