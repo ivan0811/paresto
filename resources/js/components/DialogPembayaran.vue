@@ -25,7 +25,7 @@
         </div>                         
         <v-sheet class="mb-5 pa-5">
             <div class="text-subheader-1 greyDark--text mb-2">Jumlah harga yang harus dibayar</div>         
-            <div class="text-h6 mb-4">Rp {{countTotalHarga}}</div>                                 
+            <div class="text-h6 mb-4">Rp {{total_harga}}</div>                                 
             <div class="mb-3">
                 <v-input>Nominal</v-input>
             </div>
@@ -44,7 +44,7 @@
             <v-btn color="primary" outlined elevation="0" large>
                 Batal
             </v-btn> 
-            <v-btn @click="$emit('bayar', total_bayar)" v-if="total_bayar >= countTotalHarga" color="primary" elevation="0" large>
+            <v-btn @click="$emit('bayar', total_bayar)" v-if="total_bayar >= total_harga" color="primary" elevation="0" large>
                 Bayar
             </v-btn>           
             <v-btn v-else disabled color="primary" elevation="0" large>
@@ -61,17 +61,23 @@
     props: ['dialog', 'detail'],
     data(){
       return {
+        total_harga: 0,
         total_bayar: 0
       }
     },   
-    computed: {
-        countTotalHarga(){             
-            let harga = this.detail.detail_pesanan.map(val => {
+    methods:{
+      countTotalHarga(detail){             
+            let harga = detail.detail_pesanan.map(val => {
                 return val.menu.harga * val.jumlah
             })                        
                 
             return harga.length > 0 ? harga.reduce((total, num) => total + num) : 0
         },
+    },
+    watch:{
+      detail(item){
+        this.total_harga = this.countTotalHarga(item)
+      }      
     }
   }
 </script>

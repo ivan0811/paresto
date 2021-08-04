@@ -72,19 +72,68 @@ export default {
               habis: 'red',
               selesai: 'orange'
           },
-          detail: []
+          detail: [],
+          updated: {},
+          notif: false
         }
     },   
-    async mounted(){
+    created(){
+        pesananRef.on('value', this.resultData, this.resultError)
+        notifRef.on('value', this.notifData, this.notifError)
+    },
+    async mounted(){        
         await this.loadPesanan()
-        this.pesanan = this.getPesanan      
-        // this.countHargaPesanan()          
+        this.pesanan = this.getPesanan              
+        // this.countHargaPesanan()            
+        if(this.getEventUpdated == "created"){            
+           this.setUpdateRealTime(this.pesanan.sort((itemA, itemB) => itemB.id-itemA.id)[0])
+        }       
+
+        if(this.getEventUpdated == "updated"){                                    
+            this.setUpdateRealTime(this.pesanan.filter(item => item.id == this.getIdUpdated)[0])
+        }              
     },
     methods: {        
         ...mapActions([
             'loadPesanan',
-            'deletePesanan'
-        ]),      
+            'deletePesanan',
+            'updateRealTime',
+            'setEventUpdated'            
+        ]),   
+        notifData(item){
+            this.notif = item.val().refresh
+        },
+        notifError(error){
+            console.log(error)
+        },
+        setUpdateRealTime(form){
+            this.updateRealTime({
+                id: form.id,
+                detail: form.detail_pesanan,
+                no_antrian: form.no_antrian,
+                no_meja: form.no_meja,
+                pegawai_id: form.pegawai_id,
+                status: form.status,
+                updated_at: form.updated_at,
+                created_at: form.created_at,
+                pegawai: form.pegawai
+            })
+        },
+        resultData(items){
+            this.updated = {
+                detail : items.val().detail,
+                event : items.val().event,
+                id: items.val().id,
+                no_antrian : items.val().no_antrian,
+                no_meja : items.val().no_meja,
+                pegawai_id: items.val().pegawai_id,
+                status : items.val().status,
+                updated_at: items.val().updated_at
+            }
+        },
+        resultError(error){
+            console.log(error)
+        },
         countHargaPesanan(item){
             return item.menu.harga * item.jumlah
         },        
@@ -104,10 +153,13 @@ export default {
         getAlertStatus(status){
             return this.alertStatus[status]
         },
-        async deleteHandler(id){
-            await this.deletePesanan(id)                
-            this.pesanan = this.getPesanan      
-            // this.countHargaPesanan()      
+        async deleteHandler(id){            
+            const status = await this.deletePesanan(id)                            
+            if(status){
+                this.setEventUpdated('deleted')                                   
+                this.setUpdateRealTime(this.pesanan.filter(item => item.id == id)[0])
+                this.pesanan = this.getPesanan                            
+            }            
         },
         showDialogDetail(item){
             this.dialogDetailPesanan = !this.dialogDetailPesanan
@@ -116,8 +168,51 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'getPesanan'
+            'getPesanan',
+            'getEventUpdated',
+            'getIdUpdated'
         ])
+    },
+    watch:{
+        updated(item){
+            if(item.event == 'created'){                
+                if(this.pesanan.filter(val => val.id == item.id).length == 0){
+                    this.pesanan.push({
+                        detail_pesanan : item.detail,
+                        event : item.event,
+                        id: item.id,
+                        no_antrian : item.no_antrian,
+                        no_meja : item.no_meja,
+                        pegawai_id: item.pegawai_id,
+                        status : item.status,
+                        updated_at: item.updated_at
+                    })
+                }                
+            }
+
+            if(item.event == 'updated'){
+                this.pesanan.filter(val => val.id == item.id).map(val => {
+                    val.detail_pesanan = item.detail,
+                    val.event = item.event,
+                    val.id = item.id,
+                    val.no_antrian = item.no_antrian,
+                    val.no_meja = item.no_meja,
+                    val.pegawai_id = item.pegawai_id,
+                    val.status = item.status,
+                    val.updated_at = item.updated_at
+                })
+            }
+
+            if(item.event == 'deleted'){                
+                this.pesanan = this.pesanan.filter(val => val.id != item.id)
+            }            
+        },
+        async notif(item){
+            if(item){
+                await this.loadPesanan()
+                this.pesanan = this.getPesanan   
+            }
+        }        
     }
 }
 </script>

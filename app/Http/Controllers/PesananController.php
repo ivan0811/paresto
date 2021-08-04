@@ -44,11 +44,16 @@ class PesananController extends Controller
         
         $no_antrian = 0;
         if(count($pesanan) > 0){
-            $no_antrian = $pesanan->whereNotIn('status', ['selesai', 'habis'])
+            $no_antrian = $pesanan->whereNotIn('status', ['selesai', 'habis'])            
             ->sortBy([['no_antrian', 'desc']])
-            ->first()
-            ->no_antrian;                                            
-        }                    
+            ->first();
+            
+            if(!is_null($no_antrian)){
+                $no_antrian = $no_antrian->no_antrian;          
+            }else{
+                $no_antrian = 1;
+            }
+        }                                    
 
         $pesanan = new Pesanan();
         $pesanan->no_meja = $req->no_meja;
@@ -83,7 +88,12 @@ class PesananController extends Controller
             $no_antrian = $pesanan->whereNotIn('status', ['selesai', 'habis'])
             ->sortBy([['no_antrian', 'desc']])
             ->first()
-            ->no_antrian;                                            
+            ->no_antrian;            
+            if(!is_null($no_antrian)){
+                $no_antrian = $no_antrian->no_antrian;          
+            }else{
+                $no_antrian = 1;
+            }                                
         }                    
 
         $pesanan = Pesanan::findOrFail($id);

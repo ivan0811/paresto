@@ -197,19 +197,17 @@ export default {
             dialogActive: {
                 index1: 0,
                 index2: 0
-            } 
+            },
+            update: {
+                index1: 0,
+                index2: 0,
+                status: ''
+            }  
         }
     },    
-    async mounted(){
-        await this.loadMeja()        
-        const meja = this.getMeja              
-        let jumlah = []
-        for (const item of meja) {
-            if(jumlah.length == 0 || !jumlah.includes(item.jumlah)){                
-                jumlah.push(item.jumlah)                            
-                this.meja.push(meja.filter(m => m.jumlah == item.jumlah))
-            }
-        }            
+    async mounted(){                        
+        mejaRef.on('value', this.resultData, this.errorData)
+        this.reloadMeja()
     },
     methods: {
         ...mapActions([
@@ -218,6 +216,27 @@ export default {
         ]),
         closeDialog(){
             this.dialog = false
+        },
+        errorData(error){
+            console.log(error)
+        },
+        async reloadMeja(){
+            await this.loadMeja()    
+            const meja = this.getMeja              
+            let jumlah = []
+            for (const item of meja) {
+                if(jumlah.length == 0 || !jumlah.includes(item.jumlah)){                
+                    jumlah.push(item.jumlah)                            
+                    this.meja.push(meja.filter(m => m.jumlah == item.jumlah))
+                }
+            }                
+        },
+        resultData(items){            
+            this.update = {
+                index1 : items.val().index1,
+                index2 : items.val().index2,
+                status : items.val().status
+            }
         },
         handlerDialog(index1, index2, no_meja){
             this.dialog = !this.dialog            
@@ -231,12 +250,17 @@ export default {
         setStatusStyle(status){
             return this.status[status]
         },
-        async submitStatus(form){       
-            const status = await this.updateMeja(form)            
+        async submitStatus(form){                               
+            const status = await this.updateMeja(form)                    
             if(status) {   
                 const index = this.dialogActive                                         
                 this.meja[index.index1][index.index2].status = form.status
-                this.dialog = false
+                this.dialog = false                      
+                mejaRef.set({
+                    index1 : index.index1,
+                    index2 : index.index2,
+                    status: form.status
+                })
             }
         }
     },
@@ -244,6 +268,12 @@ export default {
         ...mapGetters([
             'getMeja'
         ])        
+    },
+    watch: {
+        update(item){
+            console.log(item)
+            this.meja[item.index1][item.index2].status = item.status
+        }
     }
 }
 </script>

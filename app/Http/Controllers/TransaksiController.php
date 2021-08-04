@@ -19,10 +19,10 @@ class TransaksiController extends Controller
 
         Carbon::setLocale('id');        
         $transaksi = Transaksi::all();
-        $kd_transaksi = 'tr'.Carbon::now()->format('dmyH');  
+        $kd_transaksi = '';  
         if(count($transaksi) > 0){
             foreach ($transaksi as $key => $value) {
-                if(preg_match('/'.$kd_transaksi.'/i', $value->kd_transaksi)){
+                if(preg_match('/tr'.Carbon::now()->format('dmyH').'/i', $value->kd_transaksi)){
                     $tempKd_transaksi = (int)substr($value->kd_transaksi, 10);
                     $tempKd_transaksi += 1;
                     if(strlen(strval($tempKd_transaksi)) == 1){
@@ -36,11 +36,11 @@ class TransaksiController extends Controller
                     }
                     $kd_transaksi .= $tempKd_transaksi++;
                 }else{
-                    $kd_transaksi .= "0001";
+                    $kd_transaksi = 'tr'.Carbon::now()->format('dmyH').'0001';
                 }
             }
         }else{
-            $kd_transaksi .= "0001";
+            $kd_transaksi = 'tr'.Carbon::now()->format('dmyH').'0001';
         }
         Transaksi::create([
             'kd_transaksi' => $kd_transaksi,
@@ -52,6 +52,7 @@ class TransaksiController extends Controller
     }
 
     public function destroy($id){
-
+        Pesanan::findOrFail($id)->delete();
+        return response()->json(['status' => true]);
     }
 }

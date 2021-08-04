@@ -114,7 +114,7 @@
                                                         <p class="white--text text-caption mb-0">{{item.jumlah}}</p>                                        
                                                         <span class="icon white icon-24 icon-group ms-1" style="width: 13px; margin-right: 1px; margin-top: 1px"></span>
                                                     </div>                                    
-                                                </v-sheet>                                                                  
+                                                 </v-sheet>                                                                  
                                             </v-sheet>                                        
                                         </v-card>
                                     </v-col>                          

@@ -143,7 +143,7 @@ export default new Vuex.Store({
             showFooter: false,
             showRoutes: false,
             showNotFound: false
-        },        
+        }        
      },
      getters: {
         getUser(state){
@@ -163,7 +163,7 @@ export default new Vuex.Store({
          },
          getHeader(state) {
              return state.header
-         }
+         }         
      },
 
      mutations: {
@@ -191,7 +191,7 @@ export default new Vuex.Store({
          setHeader(state, header) {             
              state.header.title = header.title
              state.header.subtitle = header.subtitle
-         }
+         }         
      },
 
      actions: {
@@ -251,12 +251,12 @@ export default new Vuex.Store({
              commit('setListNav', getters.getNav[role])
          },
          setHeader({ commit, getters }, header) {
-             let listHeader = header.role == 'pelayan' && getters.getNav[header.role][2].sub.includes(header.page) ?
-                 getters.getListHeader[header.role]['Pesanan']
-                 : getters.getListHeader[header.role][header.page]             
+            // header.role == 'pelayan' && getters.getNav['pelayan'][2].sub.includes(header.page) ?
+            // getters.getListHeader[header.role]['Pesanan']
+             let listHeader = getters.getListHeader[header.role][header.page]             
              commit('setHeader', listHeader)
              console.log(getters.getHeader)
-         },         
+         }         
     },
     modules: {
         pegawai,

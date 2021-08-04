@@ -145,8 +145,7 @@ router.beforeEach(async (to, from, next) => {
         
 
     if(data.status == 200){
-        let roles = data.user.roles
-        console.log(koki.includes(to.name))
+        let roles = data.user.roles        
         if(admin.includes(to.name) && roles != "admin") next({name: 'NotFound'})
         else next()
 

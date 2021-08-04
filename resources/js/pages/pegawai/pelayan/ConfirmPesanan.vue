@@ -83,7 +83,7 @@ export default {
             }
         }
     },    
-    mounted(){
+    mounted(){        
         this.loadPesananStorage()
         const pesanan = this.getPesananStorage
         this.meja = pesanan.no_meja
@@ -100,7 +100,9 @@ export default {
             'removePesananStorage',
             'updateMeja',
             'postPesanan',
-            'updatePesanan'   
+            'updatePesanan',
+            'setEventUpdated',
+            'setIdUpdated'   
         ]),
         closeConfirmPesanan(){                    
             this.dialogConfirmPesanan = false
@@ -145,26 +147,31 @@ export default {
                 statusPesanan = await this.postPesanan({
                     no_meja : this.meja,
                     pesanan: this.detail
-                })            
+                })     
+                this.setEventUpdated('created')
             }else{
                 statusMeja = true
                 statusPesanan = await this.updatePesanan({
                     id: this.$route.params.id,
                     no_meja : this.meja,
                     pesanan: this.detail
-                })            
-            }            
+                })                      
+                this.setEventUpdated('updated')    
+                this.setIdUpdated(this.$route.params.id)
+            }  
+
             if(statusMeja && statusPesanan){
-                this.$router.push({name: 'pesanan'})
+                this.$router.push({name: 'Pesanan'})
                 this.dialogConfirmPesanan = false
             }
         }        
     },
     computed: {
         ...mapGetters([
-            'getPesananStorage'
+            'getPesananStorage',
+            'removePesananStorage'            
         ])
-    }  
+    }
 }
 </script>
 <style>

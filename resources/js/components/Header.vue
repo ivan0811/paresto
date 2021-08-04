@@ -19,7 +19,7 @@
                     >
                         <v-list-item-title
                         :id="attrs['aria-labelledby']"
-                        v-text="item"
+                        v-text="item"                                            
                         ></v-list-item-title>
                     </v-list-item>
                     </template>

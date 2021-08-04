@@ -48,8 +48,9 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
             Route::post('/', [PegawaiController::class, 'store']);
             Route::get('/{id}', [PegawaiController::class, 'edit']);
             Route::patch('/{id}', [PegawaiController::class, 'update']);
-            Route::delete('/{id}', [PegawaiController::class, 'destroy']);
+            Route::delete('/{id}', [PegawaiController::class, 'destroy']);            
         });                
+        Route::delete('/transaksi/{id}', [TransaksiController::class, 'destroy']); 
     });    
 
     Route::group(['middleware' => 'Pelayan'], function(){
@@ -76,8 +77,7 @@ Route::group(['middleware' => 'auth:sanctum'], function (){
 
     Route::group(['middleware' => 'Kasir'], function(){        
         Route::prefix('transaksi')->group(function () {            
-            Route::post('/', [TransaksiController::class, 'store']);             
-            Route::delete('/{id}', [TransaksiController::class, 'destroy']); 
+            Route::post('/', [TransaksiController::class, 'store']);                         
         });        
     });
 });

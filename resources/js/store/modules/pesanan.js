@@ -4,7 +4,9 @@ export default {
     state: {
         pesanan: [],
         pesananStorage: {},
-        editPesanan: {}        
+        editPesanan: {},
+        eventUpdated: '',
+        idUpdated: ''
     },
     getters: {
         getPesanan(state) {
@@ -15,6 +17,12 @@ export default {
         },
         getEditPesanan(state) {
             return state.editPesanan
+        },
+        getEventUpdated(state) {
+            return state.eventUpdated
+        },
+        getIdUpdated(state) {
+            return state.idUpdated
         }
     },
     mutations: {
@@ -26,6 +34,12 @@ export default {
         },
         setEditPesanan(state, pesanan) {
             state.editPesanan = pesanan
+        },
+        setEventUpdated(state, event) {
+            state.eventUpdated = event
+        },
+        setIdUpdated(state, id) {
+            state.idUpdated = id
         }
     },
     actions: {
@@ -87,6 +101,24 @@ export default {
                 status = res.data.status                
             }).catch(err => console.log(err))
             return status
+        },
+        setEventUpdated({ commit }, event) {
+            commit('setEventUpdated', event)            
+        },
+        setIdUpdated({ commit }, id) {
+            commit('setIdUpdated', id)  
+        },
+        updateRealTime({ getters }, form) {            
+            pesananRef.set({
+                event: getters.getEventUpdated,
+                id: form.id,
+                detail: form.detail,
+                no_antrian: form.no_antrian,
+                no_meja: form.no_meja,
+                pegawai_id: form.pegawai_id,
+                status: form.status,
+                pegawai: form.pegawai                
+            })           
         }
     }
 }

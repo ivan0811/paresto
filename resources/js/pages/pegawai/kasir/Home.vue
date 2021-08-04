@@ -144,7 +144,13 @@ export default {
             lunas: 'success',              
             belumLunas: 'red'
         },
+        updated: {},
+        updatedTransaksi: {}
     }),
+    created(){
+        transaksiRef.on('value', this.transaksiData, this.transaksiError)
+        pesananRef.on('value', this.resultData, this.resultError)
+    },
     async mounted() {
         await this.loadTransaksi()
         this.transaksi = this.getTransaksi
@@ -152,8 +158,45 @@ export default {
     methods:{
         ...mapActions([
             'loadTransaksi',
-            'postTransaksi'
+            'postTransaksi',
+            'updateRealTimeTransaksi'        
         ]),
+        transaksiData(items){
+            this.updatedTransaksi = {                
+                detail : items.val().detail,
+                event : items.val().event,
+                id: items.val().id,
+                no_antrian : items.val().no_antrian,
+                no_meja : items.val().no_meja,
+                pegawai_id: items.val().pegawai_id,
+                status : items.val().status,
+                updated_at: items.val().updated_at,
+                created_at: items.val().created_at,
+                pegawai: items.val().pegawai,
+                transaksi : items.val().transaksi            
+            }
+        },
+        transaksiError(error){
+            console.log(error)
+        },
+        resultData(items){            
+            this.updated = {                
+                detail : items.val().detail,
+                event : items.val().event,
+                id: items.val().id,
+                no_antrian : items.val().no_antrian,
+                no_meja : items.val().no_meja,
+                pegawai_id: items.val().pegawai_id,
+                status : items.val().status,
+                updated_at: items.val().updated_at,
+                created_at: items.val().created_at,
+                pegawai: items.val().pegawai,
+                transaksi : []
+            }
+        },        
+        resultError(error){
+            console.log(error)
+        },        
         closePembayaran(){
             this.dialogPembayaran = !this.dialogPembayaran
         },     
@@ -182,12 +225,15 @@ export default {
         },        
         async bayar(total_bayar){                        
             const status = await this.postTransaksi({pesanan_id: this.detail.id, total_bayar})
-            if(status){
+            if(status){                
                 await this.loadTransaksi()
-                this.transaksi = this.getTransaksi                
+                this.transaksi = this.getTransaksi                                           
+                let transaksi = this.transaksi.filter(item => item.id == this.detail.id)                                
+                transaksi[0].event = 'updated'                                
+                this.updateRealTimeTransaksi(transaksi[0])                        
+                this.closePembayaran()                            
                 this.detail = {}
-                this.detailTransaksi = false
-                this.closePembayaran()
+                this.detailTransaksi = false                           
             }
         }
     },
@@ -195,6 +241,84 @@ export default {
         ...mapGetters([
             'getTransaksi'
         ]),                     
+    },
+     watch:{
+        updated(item){
+            if(item.event == 'updated'){                                
+                if(this.transaksi.filter(val => val.id == item.id).length == 0 && item.status == 'selesai'){                    
+                    this.transaksi.push({
+                        detail_pesanan : item.detail,
+                        event : item.event,
+                        id: item.id,
+                        no_antrian : item.no_antrian,
+                        no_meja : item.no_meja,
+                        pegawai_id: item.pegawai_id,
+                        status : item.status,
+                        updated_at: item.updated_at,
+                        created_at: item.created_at,
+                        pegawai: item.pegawai,
+                        transaksi: item.transaksi
+                    })                                        
+                }                
+            }
+
+            // if(item.event == 'updated'){
+            //     this.transaksi.filter(val => val.id == item.id).map(val => {
+            //         val.detail_pesanan = item.detail,
+            //         val.event = item.event,
+            //         val.id = item.id,
+            //         val.no_antrian = item.no_antrian,
+            //         val.no_meja = item.no_meja,
+            //         val.pegawai_id = item.pegawai_id,
+            //         val.status = item.status,
+            //         val.updated_at = item.updated_at,
+            //         val.created_at = item.created_at,
+            //         val.pegawai = item.pegawai
+            //         val.trasanski = item.transaksi
+            //     })
+            // }
+
+            if(item.event == 'deleted'){                
+                this.transaksi = this.transaksi.filter(val => val.id != item.id)
+            }            
+        },
+        updatedTransaksi(item){
+            if(item.event == 'created'){                                
+                if(this.transaksi.filter(val => val.id == item.id).length == 0){                    
+                    this.transaksi.push({
+                        detail_pesanan : item.detail,
+                        event : item.event,
+                        id: item.id,
+                        no_antrian : item.no_antrian,
+                        no_meja : item.no_meja,
+                        pegawai_id: item.pegawai_id,
+                        status : item.status,
+                        updated_at: item.updated_at,
+                        created_at: item.created_at,                        
+                        transaksi: item.transaksi
+                    })                                        
+                }                
+            }
+
+            if(item.event == 'updated'){
+                this.transaksi.filter(val => val.id == item.id).map(val => {
+                    val.detail_pesanan = item.detail,
+                    val.event = item.event,
+                    val.id = item.id,
+                    val.no_antrian = item.no_antrian,
+                    val.no_meja = item.no_meja,
+                    val.pegawai_id = item.pegawai_id,
+                    val.status = item.status,
+                    val.updated_at = item.updated_at,
+                    val.created_at = item.created_at,                    
+                    val.transaksi = item.transaksi
+                })
+            }
+
+            if(item.event == 'deleted'){                
+                this.transaksi = this.transaksi.filter(val => val.id != item.id)
+            }            
+        }
     }
 }
 </script>

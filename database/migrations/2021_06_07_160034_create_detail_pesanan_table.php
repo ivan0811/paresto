@@ -20,8 +20,17 @@ class CreateDetailPesananTable extends Migration
             $table->integer('jumlah');
             $table->timestamps();
 
-            $table->foreign('pesanan_id')->references('id')->on('pesanan');
-            $table->foreign('menu_id')->references('id')->on('menu');
+            $table->foreign('pesanan_id')
+            ->references('id')
+            ->on('pesanan')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('menu_id')
+            ->references('id')
+            ->on('menu')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
         });
     }
 

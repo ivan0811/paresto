@@ -11,7 +11,7 @@
                     ></v-text-field>
                 </v-col>                    
                 <v-col class="d-flex pt-0 pb-5" cols="12">
-                    <v-alert v-bind="attrs" v-on="on" :style="customStyleAlert" class="me-2 py-1 px-4 text-subheader-1 mb-auto" dense>                        
+                    <v-alert :style="customStyleAlert" class="me-2 py-1 px-4 text-subheader-1 mb-auto" dense>                        
                             Total Pesanan {{pesanan.filter(item => item.status != 'selesai').length}}                                                                                                                                   
                     </v-alert>
                      <v-btn
@@ -33,7 +33,7 @@
                 </v-col>  
                 <v-col cols="12">                          
                     <div class="d-flex overflow-x-auto" style="width: 100%">
-                             <v-card v-for="(detail, i) in pesanan.filter(item => item.status != 'selesai')" :key="i" v-bind="card" width="max-content" class="me-8">                                      
+                             <v-card v-for="(detail, i) in pesanan" :key="i" v-bind="card" width="max-content" class="me-8">                                      
                                 <v-container class="pa-5" style="width: 320px">                                                                                               
                                          <div class="d-flex justify-space-between">
                                             <div class="d-flex">
@@ -41,7 +41,7 @@
                                                     <p class="white--text mb-0">{{detail.no_antrian}}</p>
                                                 </v-avatar>
                                                 <div class="ms-3">
-                                                    <p class="text-subtitle-1 ma-0">Meja #{{detail.no_meja}}</p>
+                                                    <p class="text-subtitle-1 ma-0">Meja #{{addZero(detail.no_meja)}}</p>
                                                     <p class="text-caption greyDark--text ma-0">Oleh {{detail.pegawai.user.username}}</p>
                                                 </div>            
                                             </div>                
@@ -116,11 +116,16 @@ export default {
               selesai: 'orange'
           },
           detail: {},
-          sendNotifStock: []  
+          sendNotifStock: [],
+          updated: {}          
         }
     },    
-    async mounted(){
-        await this.setPesanan()                               
+    created(){
+        pesananRef.on('value', this.resultData, this.resultError)
+    },
+    async mounted(){        
+        await this.setPesanan()
+        this.filterSelesai()
     },
     methods: {
         ...mapActions([
@@ -128,14 +133,49 @@ export default {
             'deletePesanan',
             'updateStatusPesanan',
             'updateStatusMenu',
-            'updateStatusPesananMenu'            
+            'updateStatusPesananMenu',
+            'updateRealTime',
+            'setEventUpdated'              
         ]),    
+        setUpdateRealTime(form){
+            this.updateRealTime({
+                id: form.id,
+                detail: form.detail_pesanan,
+                no_antrian: form.no_antrian,
+                no_meja: form.no_meja,
+                pegawai_id: form.pegawai_id,
+                status: form.status,
+                updated_at: form.updated_at,
+                created_at: form.created_at,
+                pegawai: form.pegawai
+            })
+        },
+        resultData(items){            
+            this.updated = {
+                detail : items.val().detail,
+                event : items.val().event,
+                id: items.val().id,
+                no_antrian : items.val().no_antrian,
+                no_meja : items.val().no_meja,
+                pegawai_id: items.val().pegawai_id,
+                status : items.val().status,
+                updated_at: items.val().updated_at,
+                created_at: items.val().created_at,
+                pegawai: items.val().pegawai
+            }
+        },
+        resultError(error){
+            console.log(error)
+        },
         closeSideSendNotif(){
             this.sideSendNotif = false
         },
         async setPesanan(){
-            await this.loadPesanan()
-            this.pesanan = this.getPesanan 
+            await this.loadPesanan()            
+            this.pesanan = this.getPesanan                         
+        },
+        filterSelesai(){
+            this.pesanan = this.pesanan.filter(item => item.status != 'selesai')
         },
         getAlertStatus(status){
             return this.alertStatus[status]
@@ -144,23 +184,76 @@ export default {
             this.sideSendNotif = true
             this.detail = pesanan
         },
+        addZero(no_meja){            
+            return no_meja.toString().length == 1 ? '0' + no_meja : no_meja
+        },
         async updateStatusPesananHandler(id, status){            
             const res = await this.updateStatusPesanan({id, status})            
-            if(res) await this.setPesanan()
+            if(res) {                 
+                await this.setPesanan()    
+                this.setEventUpdated('updated')                   
+                this.setUpdateRealTime(this.pesanan.filter(item => item.id == id)[0])                     
+                this.filterSelesai()
+            } 
         },
         async sendNotif(menu_id){            
             let statusPesanan = await this.updateStatusPesananMenu({id: menu_id})            
             let statusMenu = await this.updateStatusMenu({id: menu_id})
-            if(statusPesanan && statusMenu) {
+            if(statusPesanan && statusMenu) {                
                 await this.setPesanan()
                 this.closeSideSendNotif()
+                notifRef.set({
+                    refresh: true
+                })
+                this.filterSelesai()
             }
         }
     },
     computed: {
         ...mapGetters([
-            'getPesanan'
+            'getPesanan',
+            'getEventUpdated',
+            'getIdUpdated'
         ])
+    },
+    watch:{
+        updated(item){
+            if(item.event == 'created'){                                
+                if(this.pesanan.filter(val => val.id == item.id).length == 0){                    
+                    this.pesanan.push({
+                        detail_pesanan : item.detail,
+                        event : item.event,
+                        id: item.id,
+                        no_antrian : item.no_antrian,
+                        no_meja : item.no_meja,
+                        pegawai_id: item.pegawai_id,
+                        status : item.status,
+                        updated_at: item.updated_at,
+                        created_at: item.created_at,
+                        pegawai: item.pegawai
+                    })                                        
+                }                
+            }
+
+            if(item.event == 'updated'){
+                this.pesanan.filter(val => val.id == item.id).map(val => {
+                    val.detail_pesanan = item.detail,
+                    val.event = item.event,
+                    val.id = item.id,
+                    val.no_antrian = item.no_antrian,
+                    val.no_meja = item.no_meja,
+                    val.pegawai_id = item.pegawai_id,
+                    val.status = item.status,
+                    val.updated_at = item.updated_at,
+                    val.created_at = item.created_at,
+                    val.pegawai = item.pegawai
+                })
+            }
+
+            if(item.event == 'deleted'){                
+                this.pesanan = this.pesanan.filter(val => val.id != item.id)
+            }            
+        }
     }
 }
 </script>

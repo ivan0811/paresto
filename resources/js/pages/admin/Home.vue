@@ -216,7 +216,7 @@ export default {
         'loadPegawai',
         'loadMenu',
         'loadTransaksi'
-      ]),
+      ]),      
       addZero(no_meja){            
           return no_meja.toString().length == 1 ? '0' + no_meja : no_meja
       },

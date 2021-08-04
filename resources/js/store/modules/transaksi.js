@@ -2,7 +2,7 @@ import Api from '../../services/Api'
 
 export default {
     state: {
-        transaksi: {}
+        transaksi: {}        
     },
     getters: {
         getTransaksi(state) {
@@ -12,7 +12,7 @@ export default {
     mutations: {
         setTransaksi(state, data) {
             state.transaksi = data
-        }
+        }        
     },
     actions: {
         async loadTransaksi({ commit }) {            
@@ -27,6 +27,18 @@ export default {
             }).catch(err => console.log(err))
             return status
         },
+        updateRealTimeTransaksi({  }, form) {            
+            transaksiRef.set({
+                event: form.event,
+                id: form.id,
+                detail: form.detail_pesanan,
+                no_antrian: form.no_antrian,
+                no_meja: form.no_meja,
+                pegawai_id: form.pegawai_id,
+                status: form.status,                
+                transaksi: form.transaksi
+            })           
+        },
         // async editPesanan({ commit }, id) {            
         //     await Api().get('pesanan/' + id).then(res => {                
         //         commit('setEditPesanan', res.data)                
@@ -39,15 +51,15 @@ export default {
         //     }).catch(err => console.log(err))
         //     return status
         // },
-        // async deletePesanan({ dispatch }, id) {
-        //     let status = false
-        //     await Api().delete('pesanan/' + id).then(async res => {
-        //         if (res.data.status) {
-        //             await dispatch('loadPesanan')                    
-        //             status = res.data.status
-        //         }
-        //     }).catch(err => console.log(err))
-        //     return status
-        // },
+        async deleteTransaksi({ dispatch }, id) {
+            let status = false
+            await Api().delete('transaksi/' + id).then(async res => {
+                if (res.data.status) {
+                    await dispatch('loadTransaksi')                    
+                    status = res.data.status
+                }
+            }).catch(err => console.log(err))
+            return status
+        }
     }
 }
