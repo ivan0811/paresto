@@ -17,7 +17,7 @@ class CreatePegawaiTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->text('alamat');
-            $table->string('no_telp');
+            $table->string('no_telp');            
             $table->enum('jk', ['L', 'P']);
             $table->timestamps();
 

@@ -6,6 +6,7 @@ import menu from './modules/menu.js'
 import meja from './modules/meja.js'
 import pesanan from './modules/pesanan.js'
 import transaksi from './modules/transaksi.js'
+import profile from './modules/profile.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -251,10 +252,10 @@ export default new Vuex.Store({
              commit('setListNav', getters.getNav[role])
          },
          setHeader({ commit, getters }, header) {
-            // header.role == 'pelayan' && getters.getNav['pelayan'][2].sub.includes(header.page) ?
-            // getters.getListHeader[header.role]['Pesanan']
-             let listHeader = getters.getListHeader[header.role][header.page]             
-             commit('setHeader', listHeader)
+            // header.role == 'pelayan' && getters.getNav['pelayan'][2].sub.includes(header.page) ? 
+            // getters.getListHeader[header.role]['Pesanan']                         
+             let listHeader = getters.getListHeader[header.role][header.page] || getters.getListHeader[header.role][getters.getNav[header.role].filter(item => item.sub.includes(header.page))[0].title]
+             commit('setHeader', listHeader)             
              console.log(getters.getHeader)
          }         
     },
@@ -263,6 +264,7 @@ export default new Vuex.Store({
         menu,
         meja,
         pesanan,
-        transaksi
+        transaksi,
+        profile
     }
 })

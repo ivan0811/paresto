@@ -143,7 +143,7 @@
             </v-row>     
             <div class="mt-auto">                
                 <div class="d-flex justify-end">
-                    <v-btn large color="greyLight" elevation="0" class="me-4">
+                    <v-btn large color="greyLight" @click="cancelSelect" elevation="0" class="me-4">
                         Batalkan
                     </v-btn>
                     <v-btn @click="nextHandler" large color="primary" elevation="0">
@@ -222,8 +222,13 @@ export default {
     methods: {
         ...mapActions([
             'loadMeja', 
-            'setPesananStorage'            
-        ]),        
+            'setPesananStorage',
+            'removePesananStorage'         
+        ]),    
+        cancelSelect(){
+            this.removePesananStorage()
+            this.$router.push({name: 'Pesanan'})
+        }, 
         selectMeja(jumlah, meja, no_meja){       
             if(this.meja[jumlah][meja].status != 'kosong'){
                 let current = this.currentSelected

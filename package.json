@@ -28,6 +28,8 @@
     },
     "dependencies": {
         "firebase": "^8.8.1",
+        "heroku": "^7.56.1",
+        "jspdf": "^2.3.1",
         "vue-router": "^3.5.2",
         "vue2-dropzone": "^3.6.0",
         "vuetify": "^2.5.6",

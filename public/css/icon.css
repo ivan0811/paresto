@@ -70,6 +70,10 @@
     -webkit-mask-image: url(../images/icon/icon-text-document-alt.svg);
 }
 
+.icon-coolicon{
+    -webkit-mask-image: url(../images/icon/icon-coolicon.svg);
+}
+
 .icon{
     display: inline-block;
     width: 100%;

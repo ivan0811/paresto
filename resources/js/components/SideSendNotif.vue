@@ -27,7 +27,7 @@
             <v-list class="overflow-y-auto" height="100%">
                 <v-list-item v-for="(item, i) in detail.detail_pesanan" :key="i" two-line class="pa-0 pe-2">             
                     <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                        <v-img src=""></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title>{{item.menu.nama}}</v-list-item-title>

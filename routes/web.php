@@ -27,3 +27,7 @@ Route::get('/{any}', function(){
 Route::get('/login', function(){
     return view('index');
 });
+
+Route::get('/symlink', function () {
+    Artisan::call('storage:link');
+});

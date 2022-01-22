@@ -57,7 +57,7 @@
                             <v-list class="overflow-y-auto" height="100%">
                                 <v-list-item v-for="(item, i) in detail.detail_pesanan" :key="i" two-line class="pa-0 pe-2">             
                                     <v-list-item-avatar rounded>
-                                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                                        <v-img src=""></v-img>
                                     </v-list-item-avatar>
                                     <v-list-item-content>
                                         <v-list-item-title>{{item.menu.nama}}</v-list-item-title>
@@ -88,13 +88,18 @@
                                         <p class="text-subtitle-2 mb-2">Rp {{getTotalHarga(detail)}}</p>
                                     </div>                         
                                 </v-sheet>        
-                                <div class="d-flex justify-end">                                    
+                                <div class="d-flex justify-end">                                                                        
                                     <v-btn v-if="detail.transaksi.length == 0" @click="dialogPembayaran = !dialogPembayaran" color="primary" elevation="0" large>
                                         Bayar
                                     </v-btn>               
-                                    <v-btn v-else disabled color="primary" elevation="0" large>
-                                        Bayar
-                                    </v-btn>               
+                                    <div v-else>
+                                        <v-btn @click="printStruk" color="primary" elevation="0" large>
+                                            Cetak Struk
+                                        </v-btn>                              
+                                        <v-btn disabled color="primary" elevation="0" large>
+                                            Bayar
+                                        </v-btn>                                                   
+                                    </div>                                    
                                 </div>                                
                             </div>     
                     </div>
@@ -116,6 +121,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import jsPDF from 'jspdf'
 import Pembayaran from '../../../components/DialogPembayaran.vue'
  const gradients = [
     ['#5A95CC'],
@@ -235,6 +241,22 @@ export default {
                 this.detail = {}
                 this.detailTransaksi = false                           
             }
+        },
+        printStruk(){            
+            var doc = new jsPDF();
+            doc.text('Paresto', 50, 10);                        
+            let index = 10;
+            this.detail.detail_pesanan.forEach((item, i) => {                                                
+                doc.text(item.menu.nama, 10, 10 * (i + 2));
+                doc.text('x' + item.jumlah, 75, 10 * (i + 2));
+                doc.text('Rp ' + item.menu.harga * item.jumlah, 90, 10 * (i + 2));        
+                console.log(10 * (i+2))                   
+            });            
+            doc.text('Total Harga ', 10, 10 * (this.detail.detail_pesanan.length + 3));
+            doc.text('Rp ' + this.getTotalHarga(this.detail), 90, 10 * (this.detail.detail_pesanan.length + 3));
+            // doc.save(pdfName + '.pdf');
+            doc.autoPrint()
+            doc.output('dataurlnewwindow')                    
         }
     },
     computed:{

@@ -11,13 +11,14 @@ use App\Models\DetailPesanan;
 class PesananController extends Controller
 {
     function meja(){        
-        return response()->json(Meja::all());
+        return response()->json(Meja::with('pesanan')->get());
     }
     
     function updateMeja(Request $req, $no_meja){
         Meja::where('no_meja', $no_meja)
         ->update([
-            'status' => $req->status
+            'status' => $req->status,
+            'nama' => $req->nama
         ]);        
         return response()->json(['status' => true]);
     }    

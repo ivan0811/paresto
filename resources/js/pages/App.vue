@@ -2,7 +2,7 @@
     <v-app color="background">
         <div v-once v-if="status == 200">
             <navigation v-if="nav.includes(roles)" :roles="roles" :username="username"/>
-            <Header :card="card" :roles="roles" :username="username"/>
+            <Header :card="card" :foto="foto" :roles="roles" :username="username"/>
         </div>
         <router-view :roles="roles" :card="card"></router-view>
         <Footer v-show="showFooter"/>
@@ -27,13 +27,15 @@ export default {
                 elevation : 0
             },
             roles: '',
-            username: ''
+            username: '',
+            foto: ''
         }
     },
     async created(){
         const role = await this.checkLogin()        
         this.roles = role.user.roles
-        this.username = role.user.username        
+        this.username = role.user.username   
+        this.foto = role.user.foto
         if(role.status == 200){
             this.status = 200            
             this.showFooter = false

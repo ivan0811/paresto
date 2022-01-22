@@ -13,14 +13,14 @@
                                         <v-btn color="primary" elevation="0" fab absolute right small top style="margin-right: -30px">
                                         </v-btn>                        
                                             <v-avatar rounded width="200" height="200">                                             
-                                            <v-img src="https://picsum.photos/id/11/500/300"></v-img>
+                                            <v-img :src="'storage/foto/'+getProfile.foto"></v-img>
                                         </v-avatar>                                                              
                                 </v-card>                                                             
                             </div>    
                              </v-col>
                              <v-col xl="12" lg="12">
                             <div class="mb-5">
-                              <p class="text-h6 text-center">Argya</p>
+                              <p class="text-h6 text-center">{{getProfile.nama}}</p>
                            </div>     
                            <div class="mb-5">
                                <p class="text-subtitle-2 text--secondary mb-2">Bergabung sejak</p>
@@ -28,7 +28,7 @@
                            </div>     
                            <div class="mb-3">
                                <p class="text-subtitle-2 text--secondary mb-2">Role</p>
-                               <p class="ma-0">Admin</p>
+                               <p class="ma-0">{{getProfile.roles}}</p>
                            </div>   
                              </v-col>
                          </v-row>                           
@@ -45,6 +45,7 @@
                                 background-color="grey lighten-4"                                
                                 type="number"
                                 label="No Telp"
+                                v-model="form.noTelp"
                             ></v-text-field>
                            </div>                
                            <div class="mb-3">
@@ -56,7 +57,7 @@
                                 solo
                                 dense
                                 background-color="grey lighten-4"                                
-                                v-model="email"
+                                v-model="form.email"
                                 :rules="[rules.required, rules.email]"
                                 label="E-mail"
                             ></v-text-field>
@@ -66,7 +67,7 @@
                                    <p class="mb-0">Jenis Kelamin</p>
                             </div>
                              <v-radio-group
-                                v-model="jk"
+                                v-model="form.jk"
                                 row     
                                 class="ma-0"                                     
                                 >
@@ -92,6 +93,7 @@
                                 dense
                                 background-color="grey lighten-4"                                
                                 label="Alamat"
+                                v-model="form.alamat"
                             ></v-text-field>
                            </div>           
                        </v-col>
@@ -103,7 +105,7 @@
                             </v-btn>
                        </div>          
                         <div class="mx-2">
-                           <v-btn color="primary" large>
+                           <v-btn color="primary" @click="saveHandler" large>
                                <v-icon>
                                    mdi-save
                                </v-icon>
@@ -118,6 +120,7 @@
     </div>    
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
@@ -127,11 +130,8 @@ export default {
     },
     data() {
         return{                       
-            form: {
-                username: '',
-                password: '',
-                foto: '',
-                nama: '',
+            form: {                
+                foto: '',                
                 jk: '',
                 noTelp : '',
                 email: '',
@@ -147,10 +147,30 @@ export default {
             }
         }
     },    
+    async mounted(){
+        await this.loadProfile()
+        let profile = this.getProfile
+        this.form.noTelp = profile.pegawai[0].no_telp
+        this.form.email = profile.email
+        this.form.jk = profile.pegawai[0].jk
+        this.form.alamat = profile.pegawai[0].alamat
+    },
     methods: {
+        ...mapActions([
+            'loadProfile',
+            'updateProfile'
+        ]),
         closeProfile(){
             this.profile = false
+        },
+        async saveHandler(){
+            await this.updateProfile(this.form)            
         }
+    },
+    computed: {
+        ...mapGetters([
+            'getProfile'
+        ])
     }
 }
 </script>

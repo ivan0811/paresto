@@ -33,10 +33,15 @@ class PegawaiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){        
+    public function store(Request $request){    
+        if($request->photo){
+            $request->file('photo')->store('photo', 'public');                
+        }        
+
         $user = new User();
         $user->nama = $request->nama;
         $user->email = $request->email;
+        $user->foto = $request->photo->hashName();
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->roles = $request->roles;
@@ -45,9 +50,9 @@ class PegawaiController extends Controller
         Pegawai::create([
             'user_id' => $user->id,
             'alamat' => $request->alamat,
-            'no_telp' => $request->noTelp,
+            'no_telp' => $request->noTelp,            
             'jk' => $request->jk
-        ]);
+        ]);                     
 
         $user = Pegawai::with('user')->get();
 
@@ -84,8 +89,15 @@ class PegawaiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {        
         $user = User::findOrFail($id);
+        if($request->photo){
+            if($user->photo != null){
+                Storage::delete(storage_path('app/public/photo') . '/' . $user->photo);
+            }
+            $request->photo->store('photo', 'public');
+            $user->foto = $request->photo->hashName();
+        }
         $user->username = $request->username;
         if($request->password != ''){
             $user->password = Hash::make($request->password);

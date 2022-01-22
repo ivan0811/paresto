@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pegawai;
 
 class AuthController extends Controller
 {
@@ -47,5 +48,23 @@ class AuthController extends Controller
         return response()->json([
             "status" => "success"
         ], 200);
+    }
+
+    public function showProfile(Request $request){        
+        return response()->json(User::with('pegawai')->where('id', $request->user()->id)->first());
+    }
+
+    public function updateProfile(Request $request){
+        $user = User::findOrFail($request->user()->id);        
+        $user->email = $request->email;
+        $user->save();
+        
+        $pegawai = Pegawai::findOrFail($request->user()->id);
+        $pegawai->no_telp = $request->noTelp;
+        $pegawai->jk = $request->jk;
+        $pegawai->alamat = $request->alamat;
+        $pegawai->save();
+
+        return response()->json(['status' => true]);
     }
 }

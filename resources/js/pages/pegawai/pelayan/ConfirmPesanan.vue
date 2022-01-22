@@ -48,7 +48,7 @@
             </div>                    
             <div class="mt-auto">                
                 <div class="d-flex justify-end">
-                    <v-btn large color="greyLight" elevation="0" class="me-4">
+                    <v-btn large @click="backConfirmPesanan" color="greyLight" elevation="0" class="me-4">
                         <v-icon>
                             mdi-chevron-left
                         </v-icon>
@@ -104,6 +104,13 @@ export default {
             'setEventUpdated',
             'setIdUpdated'   
         ]),
+        backConfirmPesanan(){
+             if(this.$route.params.id == undefined){                
+               this.$router.push({name: 'tambahPesanan'}) 
+            }else{
+                this.$router.push({name: 'editPesanan', params: this.$route.params.id}) 
+            }              
+        },
         closeConfirmPesanan(){                    
             this.dialogConfirmPesanan = false
         },

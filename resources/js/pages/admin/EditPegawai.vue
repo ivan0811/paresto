@@ -9,7 +9,7 @@
                        <v-col cols="6">
                          <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Upload Foto</v-input>
+                                <p class="mb-0">Upload Foto</p>
                             </div>
                             <!-- <vue-dropzone
                             ref="myVueDropzone"
@@ -24,7 +24,7 @@
                            </div>          
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Roles</v-input>
+                                <p class="mb-0">Roles</p>
                             </div>
                                 <v-select
                                 dense
@@ -38,7 +38,7 @@
                            </div>     
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Username</v-input>
+                                <p class="mb-0">Username</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -51,7 +51,7 @@
                            </div>     
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Password</v-input>
+                                <p class="mb-0">Password</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -67,7 +67,7 @@
                        <v-col cols="6">
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Nama Lengkap</v-input>
+                                <p class="mb-0">Nama Lengkap</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -80,7 +80,7 @@
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Jenis Kelamin</v-input>
+                                <p class="mb-0">Jenis Kelamin</p>
                             </div>
                              <v-radio-group
                                 v-model="form.jk"
@@ -101,7 +101,7 @@
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>No Telp</v-input>
+                                <p class="mb-0">No Telp</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -115,7 +115,7 @@
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Email</v-input>
+                                <p class="mb-0">Email</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -129,7 +129,7 @@
                            </div>       
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Alamat</v-input>
+                                <p class="mb-0">Alamat</p>
                             </div>                         
                             <v-textarea                                                            
                                 flat

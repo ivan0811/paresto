@@ -30,6 +30,8 @@ use App\Http\Controllers\TransaksiController;
 Route::group(['middleware' => 'auth:sanctum'], function (){
     Route::get('/check-roles', [AuthController::class, 'CheckRoles']);
     Route::get('/check-status', [AuthController::class, 'checkStatus']);
+    Route::get('/profile', [AuthController::class, 'showProfile']);
+    Route::patch('/profile', [AuthController::class, 'updateProfile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/pesanan', [PesananController::class, 'show']);

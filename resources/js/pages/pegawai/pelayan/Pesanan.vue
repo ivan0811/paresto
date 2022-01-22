@@ -6,7 +6,8 @@
                 <v-col cols="8">
                     <v-text-field
                         solo
-                        label="Search"
+                        v-model="search"                        
+                        label="Cari"
                         flat
                     ></v-text-field>
                 </v-col>
@@ -16,7 +17,39 @@
                         Pesanan Baru
                     </v-btn>
                 </v-col>               
-                <v-col cols="12" v-for="(item, i) in pesanan" :key="i">
+                <v-col v-show="search == ''" cols="12" v-for="(item, i) in pesanan" :key="i">
+                    <v-card v-bind="card" @click.native="showDialogDetail(item)">
+                    <v-container class="py-2 px-5">
+                        <div class="d-flex justify-space-between">
+                            <p class="font-weight-regular greyPrimary--text my-auto">{{item.no_antrian}}</p>
+                            <p class="font-weight-regular my-auto">Meja #{{addZero(item.no_meja)}}</p>
+                            <p class="text-caption greyDark--text my-auto">24 April 2021 20.14 WIB</p>
+                            <p class="font-weight-regular my-auto">Rp {{getTotalHarga(item)}}</p>
+                            <v-alert class="py-1 px-4 my-auto rounded-pill text-caption mb-0" :color="getAlertStatus(item.status)" text dense>{{item.status}}</v-alert>
+                             <v-menu offset-y>
+                                     <template v-slot:activator="{ on, attrs }">
+                                         <v-btn class="my-auto" x-small icon>
+                                            <v-icon
+                                                size="24"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            >mdi-dots-vertical</v-icon>
+                                        </v-btn>
+                                    </template>
+                                     <v-list>
+                                        <v-list-item :to="{name: 'editPesanan', params: {id : item.id}}">
+                                            <v-list-item-title>Edit</v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item @click="deleteHandler(item.id)">
+                                            <v-list-item-title>Delete</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                    </v-menu>
+                        </div>
+                    </v-container>
+                </v-card>
+                </v-col>
+                <v-col v-show="search != ''" cols="12" v-for="(item, i) in pesananSearch" :key="i">
                     <v-card v-bind="card" @click.native="showDialogDetail(item)">
                     <v-container class="py-2 px-5">
                         <div class="d-flex justify-space-between">
@@ -74,7 +107,9 @@ export default {
           },
           detail: [],
           updated: {},
-          notif: false
+          notif: false,
+          search: '',
+          pesananSearch : []
         }
     },   
     created(){
@@ -206,6 +241,10 @@ export default {
             if(item.event == 'deleted'){                
                 this.pesanan = this.pesanan.filter(val => val.id != item.id)
             }            
+        },
+        search(keyword){
+            let patt = new RegExp(keyword)
+            this.pesananSearch = this.pesanan.filter(val => patt.test(this.getTotalHarga(val)) || patt.test(val.status));
         },
         async notif(item){
             if(item){

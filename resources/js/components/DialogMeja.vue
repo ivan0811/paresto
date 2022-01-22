@@ -26,7 +26,17 @@
                     v-model="form.status"
                     ></v-select>         
             </div>
-                                               
+            <div v-if="form.status == 'dipesan'" class="mb-3">
+                <div class="text-subheader-1 mb-2">Atas Nama</div>
+                <v-text-field
+                   dense
+                    solo
+                    flat
+                    v-model="form.nama"
+                    background-color="grey lighten-4"           
+                    label="Nama Pelanggan"          
+                ></v-text-field>                 
+            </div>
         </v-sheet>            
 
         <v-card-actions class="d-flex">
@@ -50,7 +60,8 @@
       return {
         form: {
           no_meja: '',
-          status: ''
+          status: '',
+          nama: ''
         }        
       }
     },    
@@ -58,6 +69,7 @@
         detail(data){ 
             this.form.no_meja = data.no_meja         
             this.form.status = data.status
+            this.form.nama = data.nama            
         }
     }
   }

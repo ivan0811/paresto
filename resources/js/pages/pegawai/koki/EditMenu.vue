@@ -9,7 +9,7 @@
                        <v-col cols="6">
                          <!-- <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Upload Foto</v-input>
+                                <p class="mb-0">Upload Foto</p>
                             </div>
                             <vue-dropzone
                             ref="myVueDropzone"
@@ -24,7 +24,7 @@
                            </div>           -->
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Jenis</v-input>
+                                <p class="mb-0">Jenis</p>
                             </div>
                                 <v-select
                                 dense
@@ -43,7 +43,7 @@
                        <v-col cols="6">
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Nama Menu</v-input>
+                                <p class="mb-0">Nama Menu</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -56,7 +56,7 @@
                            </div>                
                            <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Harga</v-input>
+                                <p class="mb-0">Harga</p>
                             </div>
                             <v-text-field                                
                                 flat
@@ -70,7 +70,7 @@
                            </div>                                                                                                            
                            <!-- <div class="mb-3">
                                <div class="mb-3">
-                                <v-input>Deskripsi</v-input>
+                                <p class="mb-0">Deskripsi</p>
                             </div>
                             <v-text-field                                
                                 flat

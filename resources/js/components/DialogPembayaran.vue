@@ -27,7 +27,7 @@
             <div class="text-subheader-1 greyDark--text mb-2">Jumlah harga yang harus dibayar</div>         
             <div class="text-h6 mb-4">Rp {{total_harga}}</div>                                 
             <div class="mb-3">
-                <v-input>Nominal</v-input>
+                <p class="mb-0">Nominal</p>
             </div>
             <v-text-field                                
                 flat

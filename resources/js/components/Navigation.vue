@@ -103,7 +103,7 @@ import {mapGetters, mapActions} from 'vuex'
                 }}).then((res) => {                    
                     this.removeLocalStorage()
                     this.$router.push({
-                        name: 'Home'
+                        name: 'Login'
                     })  
                     this.$router.go(0)
                 }).catch((err) => {

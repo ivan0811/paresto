@@ -142,6 +142,9 @@ router.beforeEach(async (to, from, next) => {
     const data = await store.dispatch('checkRoles')    
     if(data.status == 401 && admin.concat(koki.concat(pelayan.concat(kasir))).includes(to.name)) next({name: 'NotFound'})
     else next()
+
+    if(data.status == 401 && to.name == 'Profile') next({name: 'NotFound'})
+    else next()
         
 
     if(data.status == 200){
@@ -158,8 +161,6 @@ router.beforeEach(async (to, from, next) => {
         if(kasir.includes(to.name) && roles != "kasir") next({name: 'NotFound'})
         else next()
     }
-
-
 })
 
 

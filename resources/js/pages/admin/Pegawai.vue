@@ -46,8 +46,8 @@
                     <v-card v-bind="card" @click.stop="setDetail(item)">
                         <v-list two-line>
                             <v-list-item>
-                                <v-list-item-avatar rounded color="blue">
-                                    <v-img></v-img>
+                                <v-list-item-avatar rounded>
+                                    <v-img :src="'storage/photo/'+item.user.foto"></v-img>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <v-list-item-title v-html="item.user.nama" class="mb-2"></v-list-item-title>

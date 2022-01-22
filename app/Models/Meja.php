@@ -9,10 +9,11 @@ class Meja extends Model
 {
     use HasFactory;
     protected $table = 'meja';
-    protected $fillable = ['no_meja', 'status', 'jumlah'];
+    protected $fillable = ['no_meja', 'nama', 'status', 'jumlah'];
 
-    public function meja()
+    public function pesanan()
     {
-        return $this->hasMany(Meja::class);
+        return $this->hasMany(Pesanan::class, 'no_meja');
     }
+        
 }

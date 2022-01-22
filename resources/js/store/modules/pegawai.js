@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Api from '../../services/Api'
 
 export default {
@@ -24,19 +25,24 @@ export default {
     actions: {
         async loadPegawai({ commit, getters }) {            
             await Api().get('pegawai').then(res => {                
-                commit('setPegawai', res.data)            
+                commit('setPegawai', res.data)                
             }).catch(err => console.log(err))            
         },
         async postPegawai({ commit }, form) {
             let status = false
-            await Api().post('pegawai', form).then(res => {
+            const token = JSON.parse(localStorage.getItem('user')).bearer_token
+            await axios.post('/api/pegawai', form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`   
+                }
+            }).then(res => {
                 const data = res.data
                 if (data.status) {
-                    commit('setPegawai', data.user)
-                    console.log(data.status)
+                    commit('setPegawai', data.user)                    
                     status = data.status                    
                 }
-            }).catch(err => console.log(err))
+            }).catch(err => console.log(err))            
             return status
         },
         async editPegawai({ commit }, id) {            

@@ -30,7 +30,8 @@
                         <v-container>
                             <div class="d-flex justify-space-between" style="width: 185px">
                                 <div class="d-flex">
-                                    <v-avatar rounded color="blue" class="me-3" size="36">
+                                    <v-avatar rounded class="me-3" size="36">
+                                        <v-img :src="'storage/photo/'+foto"></v-img>
                                     </v-avatar>
                                     <div>
                                         <p style="font-size: 12px" class="text--secondary ma-0">Saya {{roles}}</p>
@@ -50,9 +51,9 @@
                                                 <v-list-item-title class="text-h6">Notifikasi</v-list-item-title>
                                             </v-list-item-content>                                            
                                         </v-list-item>
-                                        <v-list-item three-line>
+                                       <!--  <v-list-item three-line>
                                               <v-list-item-avatar rounded="">
-                                                    <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                                                    <v-img src=""></v-img>
                                                 </v-list-item-avatar>
                                                 <v-list-item-content>
                                                     <v-list-item-title>Edit</v-list-item-title>
@@ -61,7 +62,7 @@
                                         </v-list-item>
                                         <v-list-item>
                                             <v-list-item-title>Delete</v-list-item-title>
-                                        </v-list-item>
+                                        </v-list-item> -->
                                     </v-list>
                                     </v-menu>
                                 </div>                            
@@ -81,7 +82,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 export default {
-    props: ['roles', 'card', 'username'],
+    props: ['roles', 'card', 'username', 'foto'],
     data(){
         return{
             includesRoles: ['admin', 'pelayan', 'koki'],
@@ -90,10 +91,8 @@ export default {
         }
     },   
     mounted(){
-        this.getLocalStorage()  
-        this.setSubHeader(this.$route.name)                
-        console.log(this.roles)
-        console.log(this.$route.name)
+        this.getLocalStorage()         
+        this.setSubHeader(this.$route.name)                        
     },
     methods: {
         ...mapActions([

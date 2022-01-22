@@ -101,8 +101,8 @@ export default {
              counter: [],
              detailPesanan: []                           
         }
-    },    
-    async mounted(){
+    },       
+    async mounted(){        
         await this.loadMenu()        
         for (const item of this.tabs) {                                    
             item.content = this.getMenu.filter(m => m.kategori.nama == item.title.toLowerCase())            
@@ -124,6 +124,13 @@ export default {
             'editPesanan',
             'setPesananStorage'
         ]),
+        backPesanan(){
+            if(this.$route.params.id == undefined){                
+               this.$router.push({name: 'selectMeja'}) 
+            }else{
+                this.$router.push({name: 'Pesanan'}) 
+            }    
+        },        
         closeDetailPesanan(){
             this.dialogDetailPesanan = false
         },

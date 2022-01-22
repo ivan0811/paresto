@@ -41,7 +41,7 @@
             <v-list>
                 <v-list-item v-for="(item, index) in detail.detail_pesanan" :key="index" two-line class="pa-0 d-flex justify-space-between">
                     <v-list-item-avatar rounded>
-                        <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg"></v-img>
+                        <v-img src=""></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title>{{item.menu.nama}}</v-list-item-title>
